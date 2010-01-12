@@ -1,12 +1,12 @@
 package util;
 
 public class Vector {
-	public float x, y, z;
+	public double x, y, z;
 	
 	public Vector() {
 	}
 	
-	public Vector(float x, float y, float z) {
+	public Vector(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -20,21 +20,21 @@ public class Vector {
 		return new Vector(y * o.z - z * o.y, z*o.x - x*o.z, x*o.y - y*o.x);
 	}
 	
-	public float dot(Vector o) {
+	public double dot(Vector o) {
 		return x * o.x + y * o.y + x * o.z;
 	}
 	
-	public float length() {
-		return (float)Math.sqrt(x * x + y * y + z * z);
+	public double length() {
+		return (double)Math.sqrt(x * x + y * y + z * z);
 	}
 	
 	
 	public Vector normalize() {
-		float length = this.length();
+		double length = this.length();
 		return new Vector(x / length, y / length, z / length);
 	}
 	
-	public Vector scale(float scalar) {
+	public Vector scale(double scalar) {
 		return new Vector(scalar * x, scalar * y, scalar * z);
 	}
 	

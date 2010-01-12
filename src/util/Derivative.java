@@ -3,14 +3,14 @@ package util;
 
 public class Derivative
 {
-	public Vector velocity;
-	public Vector acceleration;
+	public Vector dx; //velocity
+	public Vector dv; //acceleration
 	
 	public Derivative(){};
 	
 	public Derivative(Vector velocity, Vector acceleration)
 	{
-		this.velocity = velocity;
-		this.acceleration = acceleration;
+		this.dx = velocity;
+		this.dv = acceleration;
 	}
 }

@@ -5,7 +5,7 @@ package util;
 
 public class Matrix 
 {
-	public float m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44;
+	public double m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44;
 
 	public Matrix()
 	{
@@ -15,7 +15,7 @@ public class Matrix
 	// construct a matrix from explicit values for the 3x3 sub matrix.
 	// note: the rest of the matrix (row 4 and column 4 are set to identity)
 	
-	public Matrix(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33)
+	public Matrix(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33)
 	{
 		this.m11 = m11;
 		this.m12 = m12;
@@ -37,10 +37,10 @@ public class Matrix
 
 	// construct a matrix from explicit entry values for the whole 4x4 matrix.
 
-	public Matrix(float m11, float m12, float m13, float m14,
-			float m21, float m22, float m23, float m24,
-			float m31, float m32, float m33, float m34,
-			float m41, float m42, float m43, float m44)
+	public Matrix(double m11, double m12, double m13, double m14,
+			double m21, double m22, double m23, double m24,
+			double m31, double m32, double m33, double m34,
+			double m41, double m42, double m43, double m44)
 	{
 		this.m11 = m11;
 		this.m12 = m12;
@@ -126,7 +126,7 @@ public class Matrix
 
 	// calculate determinant of 3x3 sub matrix.
 
-	public float determinant()
+	public double determinant()
 	{
 		return -m13*m22*m31 + m12*m23*m31 + m13*m21*m32 - m11*m23*m32 - m12*m21*m33 + m11*m22*m33;
 	}
@@ -144,12 +144,12 @@ public class Matrix
 	public Matrix inverse()
 	{
 		Matrix returnMat = new Matrix();
-		float determinant = this.determinant();
+		double determinant = this.determinant();
 
 		if(invertible())
 		{
 
-			float k = 1.0f / determinant;
+			double k = 1.0f / determinant;
 
 			returnMat.m11 = (m22*m33 - m32*m23) * k;
 			returnMat.m12 = (m32*m13 - m12*m33) * k;
@@ -234,7 +234,7 @@ public class Matrix
 
 	// multiply this matrix by a scalar.
 
-	public Matrix scale(float s)
+	public Matrix scale(double s)
 	{
 		return new Matrix(m11*s, m12*s, m13*s, m14*s, 
 				m21*s, m22*s, m23*s, m24*s,
@@ -271,9 +271,9 @@ public class Matrix
 	public Vector transform(Vector v)
 	{
 		
-		float rx = v.x * m11 + v.y * m12 + v.z * m13 + m14;
-		float ry = v.x * m21 + v.y * m22 + v.z * m23 + m24;
-		float rz = v.x * m31 + v.y * m32 + v.z * m33 + m34;
+		double rx = v.x * m11 + v.y * m12 + v.z * m13 + m14;
+		double ry = v.x * m21 + v.y * m22 + v.z * m23 + m24;
+		double rz = v.x * m31 + v.y * m32 + v.z * m33 + m34;
 		Vector returnVec = new Vector(rx, ry, rz);
 		return returnVec;
 	}
