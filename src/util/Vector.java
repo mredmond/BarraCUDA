@@ -1,9 +1,11 @@
 package util;
 
-public class Vector {
+public class Vector 
+{
 	public double x, y, z;
 	
-	public Vector() {
+	public Vector() 
+	{
 	}
 	
 	public Vector(double x, double y, double z) {
@@ -40,5 +42,10 @@ public class Vector {
 	
 	public Vector subtract(Vector o) {
 		return new Vector(x - o.x, y - o.y, z - o.z);
+	}
+	
+	public String toString()
+	{
+		return "<" + x + ", " + y + ", " + z + ">";
 	}
 }

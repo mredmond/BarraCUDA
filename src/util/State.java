@@ -19,10 +19,6 @@ public class State {
 		this.charge = charge;
 	}
 
-	public void setEfield(Vector efield)
-	{
-		this.efield = efield;
-	}
 	
 	// interpolation used for animating inbetween states
 	public State interpolate(State a, State b, double alpha) 

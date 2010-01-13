@@ -15,7 +15,8 @@ public class NumericalIntegration
 	
 	public Derivative evaluate(State initial, double t, double dt, Derivative d)
 	{
-		State state = new State(); //arbitrary initialization to keep eclipse happy. i don't think this actually has to be here.
+
+		State state = initial; //arbitrary initialization to keep eclipse happy. i don't think this actually has to be here.
 	    state.position = initial.position.add(d.dx.scale(dt));
 	    state.velocity = initial.velocity.add(d.dv.scale(dt)); 
 
@@ -27,7 +28,7 @@ public class NumericalIntegration
 	
 	public void integrate(State state, double t, double dt)
     {
-        Derivative a = evaluate(state, t);
+        Derivative a = evaluate(state, t);      
         Derivative b = evaluate(state, t+dt*0.5f, dt*0.5f, a);
         Derivative c = evaluate(state, t+dt*0.5f, dt*0.5f, b);
         Derivative d = evaluate(state, t+dt, dt, c);

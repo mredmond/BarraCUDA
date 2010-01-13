@@ -6,70 +6,86 @@ import util.Vector;
 
 public class Physics 
 {
-
-	public ArrayList<PointCharge> chargeManager = new ArrayList<PointCharge>();
+	public ArrayList<PointCharge> chargeManager;
+	public NumericalIntegration Integrator;
 	
+	public Physics(ArrayList<PointCharge> chargeManagerIn)
+	{
+		this.chargeManager = chargeManagerIn;
+		this.Integrator = new NumericalIntegration();
+	}
+	
+
+
 	public void addCharge(int id, float charge)
 	{
-		
+		chargeManager.add(id, new PointCharge(id, charge));
 	}
-	
+
 	public void removeCharge(int id)
 	{
-		
+		chargeManager.remove(id);
 	}
-	
-	public void setChargePosition(int id, Vector position)
+
+	public void initializeChargePosition(int id, Vector positionIn)
 	{
-		
+		chargeManager.get(id).myState.position = positionIn;
 	}
-	
-	public void setChargeVelocity(int id, Vector velocity)
+
+	public void initializeChargeVelocity(int id, Vector velocityIn)
 	{
-		
+		chargeManager.get(id).myState.velocity = velocityIn;
 	}
 	
+	public void initializeEField(int id, Vector efieldIn)
+	{
+		chargeManager.get(id).myState.efield = efieldIn;
+	}
+
 	public void updateElectrofieldApproximation()
 	{
 		for(PointCharge pc1 : chargeManager)
 		{
 			//we want to know the electromagnetic field at each point charge (consider all OTHER pcs)
 			//this is generated with coulomb's law
-			ArrayList<PointCharge> otherCharges = new ArrayList<PointCharge>();
-			otherCharges.addAll(chargeManager);
-			otherCharges.remove(pc1.idNum);
-			
+
 			Vector sum = new Vector(0,0,0); //create the efield acting on one charge
-			
-			for(PointCharge pc2: otherCharges)
+
+			for(PointCharge pc2: chargeManager)
 			{
-				//necessary variables for eField calc
-				Vector r = pc1.myState.position;
-				Vector rHat = pc2.myState.position;
-				double qi = pc2.myState.charge;
-				
-				Vector numerator = r.subtract(rHat).scale(qi);
-				double inverseDenominator = Math.pow((r.subtract(rHat).length()), -3);
-				
-				sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
-				
+				if(pc2.idNum == pc1.idNum)
+				{
+					//skip this case ... don't want to add a particle to it's own e-field
+				}
+				else
+				{
+					//necessary variables for eField calc
+					Vector r = pc1.myState.position;
+					Vector rHat = pc2.myState.position;
+					double qi = pc2.myState.charge;
+
+					Vector numerator = r.subtract(rHat).scale(qi);
+					double inverseDenominator = Math.pow((r.subtract(rHat).length()), -3);
+
+					sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
+				}
 			}
-			
-			double scaleFactor = 8987551787.9979; //this is 1/(4*pi*e_0), roughly 9 x 10^9 
-			
-			Vector efield = sum.scale(scaleFactor);
-			
-			pc1.myState.setEfield(efield);
+
+			pc1.myState.efield = sum;
 		}
 	}
-	
-	
-	public void update(float t, float dt) 
+
+
+	public void updateAll(double t, double dt) 
 	{
-		updateElectrofieldApproximation();
-		integrate();
-		recalculate();
+		updateElectrofieldApproximation(); //just do this ONCE per update
+		for(PointCharge pc : chargeManager)
+		{
+			System.out.println("Updating particle " + pc.idNum);
+			Integrator.integrate(pc.myState, t, dt);
+		}
+
 	}
-	
-	
+
+
 }
