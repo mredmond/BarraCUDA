@@ -15,7 +15,7 @@ public class PointCharge
 	
 	public String toString()
 	{
-		return "pointCharge" + idNum + "\n position: " + myState.position.toString() + "\n velocity: " + myState.velocity.toString();
+		return "pointCharge" + idNum + "\n charge: " + myState.charge + "\n position: " + myState.position.toString() + "\n velocity: " + myState.velocity.toString() + "\n efield: " + myState.efield.toString() + "\n";
 	}
 	
 }

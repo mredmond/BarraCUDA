@@ -14,6 +14,13 @@ public class Vector
 		this.z = z;
 	}
 	
+	public void zero()
+	{
+		x = 0;
+		y = 0;
+		z = 0;
+	}
+	
 	public Vector add(Vector o) {
 		return new Vector(x + o.x, y + o.y, z + o.z);
 	}
