@@ -1,23 +1,32 @@
 package util;
 
+import physics.PointCharge;
+
 public class State {
 	// primary
 	public Vector position;
-	public Vector velocity;
+	public Vector momentum;
 	public Vector efield; //the value of the electric field at this position
 	public Boolean touchingOther;
 
+	//secondary
+	public Vector velocity;
+	
 	// constant
 	public double charge;
+	public double mass;
+	public double inverseMass;
 
 
 	public State() {}
 
-	public State(double charge) 
+	public State(double charge, double mass) 
 	{
 		this.position = new Vector();
-		this.velocity = new Vector();
+		this.momentum = new Vector();
 		this.charge = charge;
+		this.mass = mass;
+		this.inverseMass = 1 / mass;
 		this.touchingOther = false;
 	}
 
@@ -26,8 +35,14 @@ public class State {
 	{
 		State interpolatedState = b;
 		interpolatedState.position = a.position.scale(1 - alpha).add(b.position.scale(alpha));
-		interpolatedState.velocity = a.velocity.scale(1 - alpha).add(b.velocity.scale(alpha));
+		interpolatedState.momentum = a.momentum.scale(1 - alpha).add(b.momentum.scale(alpha));
 		interpolatedState.efield = a.efield.scale(1 - alpha).add(b.efield.scale(alpha));
 		return interpolatedState;
 	}
+	
+	public void recalc()
+	{
+		velocity = momentum.scale(inverseMass);
+	}
+	
 }

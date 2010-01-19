@@ -16,9 +16,9 @@ public class Physics
 		this.Integrator = new NumericalIntegration();
 	}
 
-	public void addCharge(int id, float charge)
+	public void addCharge(int id, double charge, double mass)
 	{
-		chargeManager.add(id, new PointCharge(id, charge));
+		chargeManager.add(id, new PointCharge(id, charge, mass));
 	}
 
 	public void removeCharge(int id)
@@ -31,9 +31,9 @@ public class Physics
 		chargeManager.get(id).myState.position = positionIn;
 	}
 
-	public void initializeChargeVelocity(int id, Vector velocityIn)
+	public void initializeChargeMomentum(int id, Vector momentumIn)
 	{
-		chargeManager.get(id).myState.velocity = velocityIn;
+		chargeManager.get(id).myState.momentum = momentumIn;
 	}
 
 	public void initializeEField(int id, Vector efieldIn)
@@ -83,7 +83,7 @@ public class Physics
 			if(pc1.myState.touchingOther)
 			{
 				pc1.myState.efield.zero();
-				pc1.myState.velocity.zero();
+				pc1.myState.momentum.zero();
 			}
 		}
 		
