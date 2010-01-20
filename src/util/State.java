@@ -1,7 +1,5 @@
 package util;
 
-import physics.PointCharge;
-
 public class State {
 	// primary
 	public Vector position;
@@ -13,6 +11,7 @@ public class State {
 	public Vector velocity;
 	
 	// constant
+	public double radius;
 	public double charge;
 	public double mass;
 	public double inverseMass;
@@ -20,12 +19,13 @@ public class State {
 
 	public State() {}
 
-	public State(double charge, double mass) 
+	public State(double charge, double mass, double radius) 
 	{
 		this.position = new Vector();
 		this.momentum = new Vector();
 		this.charge = charge;
 		this.mass = mass;
+		this.radius = radius;
 		this.inverseMass = 1 / mass;
 		this.touchingOther = false;
 	}

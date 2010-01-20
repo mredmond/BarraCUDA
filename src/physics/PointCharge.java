@@ -7,10 +7,10 @@ public class PointCharge
 	public State myState;
 	public int idNum;
 	
-	public PointCharge(int idNum, double charge, double mass)
+	public PointCharge(int idNum, double charge, double mass, double radius)
 	{
 		this.idNum = idNum;
-		myState = new State(charge, mass);
+		myState = new State(charge, mass, radius);
 	}
 	
 	public String toString()

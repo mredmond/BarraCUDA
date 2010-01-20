@@ -7,6 +7,7 @@ import util.Vector;
 public class Physics 
 {
 
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 10000;
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -16,9 +17,9 @@ public class Physics
 		this.Integrator = new NumericalIntegration();
 	}
 
-	public void addCharge(int id, double charge, double mass)
+	public void addCharge(int id, double charge, double mass, double radius)
 	{
-		chargeManager.add(id, new PointCharge(id, charge, mass));
+		chargeManager.add(id, new PointCharge(id, charge, mass, radius));
 	}
 
 	public void removeCharge(int id)
@@ -41,7 +42,7 @@ public class Physics
 		chargeManager.get(id).myState.efield = efieldIn;
 	}
 
-	public void updateElectrofieldApproximation(double width)
+	public void updateElectrofieldApproximation()
 	{
 		//This method updates the efield vector for each point charge in the chargeManager.
 		//It is used in the NumericalIntegration class for determining forces.
@@ -64,7 +65,7 @@ public class Physics
 					Vector rDiff = r.subtract(rHat); //a vector going from r to rHat
 					double qi = pc2.myState.charge;
 
-					if(rDiff.length() < 2*width) //only add if the particles are suitably far apart
+					if(rDiff.length() < pc2.myState.radius + pc1.myState.radius) //only add if the particles are suitably far apart
 					{
 						//they're too close. set each one's efield and velocity vecs to zero
 						pc1.myState.touchingOther = true;
@@ -76,7 +77,7 @@ public class Physics
 						Vector numerator = rDiff.scale(qi);
 						double inverseDenominator = Math.pow((rDiff.length()), -3);
 						sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
-						pc1.myState.efield = sum;
+						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work
 					}
 				}
 			}
@@ -89,9 +90,9 @@ public class Physics
 		
 	}
 
-	public void updateAll(double t, double dt, double width) 
+	public void updateAll(double t, double dt) 
 	{
-		updateElectrofieldApproximation(width); //just do this ONCE per update, otherwise you've got some problems
+		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
