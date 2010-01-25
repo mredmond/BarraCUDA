@@ -7,7 +7,7 @@ import util.Vector;
 public class Physics 
 {
 
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 10000;
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 20000;
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -70,7 +70,7 @@ public class Physics
 						//they're too close. set each one's efield and velocity vecs to zero
 						pc1.myState.touchingOther = true;
 						pc2.myState.touchingOther = true;
-						System.out.println("Particle " + pc1.idNum + " is touching particle " + pc2.idNum + ".");
+						//System.out.println("Particle " + pc1.idNum + " is touching particle " + pc2.idNum + ".");
 					}
 					else
 					{

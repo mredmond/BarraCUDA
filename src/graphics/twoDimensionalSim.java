@@ -38,18 +38,18 @@ public class twoDimensionalSim extends JFrame
 		{
 			PointCharge pc = myIter.next();
 			drawCharge(g, pc);
-			drawEField(g, pc);
-			//drawMomentum(g, pc);
+			//drawEField(g, pc);
+			drawMomentum(g, pc);
 		}
 	}
 	
 	public void drawCharge(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge >= 0)
+		if(pc.myState.charge > 0)
 		{
 			g.setColor(Color.BLUE);
 		}
-		else if(pc.myState.charge <= 0)
+		else if(pc.myState.charge < 0)
 		{
 			g.setColor(Color.RED);
 		}
@@ -64,11 +64,11 @@ public class twoDimensionalSim extends JFrame
 	
 	public void drawEField(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge >= 0)
+		if(pc.myState.charge > 0)
 		{
 			g.setColor(Color.BLUE);
 		}
-		else if(pc.myState.charge <= 0)
+		else if(pc.myState.charge < 0)
 		{
 			g.setColor(Color.RED);
 		}
