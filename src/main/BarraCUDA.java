@@ -49,6 +49,8 @@ public class BarraCUDA
 		for(double t = 0.0; t <= 30.000; t+=dt)
 		{
 			physicsEngine.updateAll(t, dt);
+			
+			
 			try 
 			{
 				Thread.sleep(20);

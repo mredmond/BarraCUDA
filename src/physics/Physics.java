@@ -7,7 +7,7 @@ import util.Vector;
 public class Physics 
 {
 
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 20000;
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 25000;
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
