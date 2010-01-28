@@ -85,7 +85,7 @@ public class Physics
 			}
 			if(pc1.myState.touchingOther)
 			{
-				//2D Collision Response at the moment
+				//2D Collision Response at the moment. works for same-charge collision
 				PointCharge pc2 = pc1.myState.touching;
 				
 				Vector collisionUnitNormal = pc2.myState.position.subtract(pc1.myState.position).normalize();

@@ -36,7 +36,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	{
 		JFrame frame = new JFrame();
 		//frame.setBounds(0, 0, 1024, 768);
-		frame.setSize(1024, 768);
+		frame.setSize(1280, 1024);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			
 		JMenuBar menuBar = new JMenuBar();
@@ -80,8 +80,8 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		{
 			PointCharge pc = myIter.next();
 			drawCharge(g, pc);
-			drawEField(g, pc);
-			//drawMomentum(g, pc);
+			//drawEField(g, pc);
+			drawMomentum(g, pc);
 		}
 	}
 	

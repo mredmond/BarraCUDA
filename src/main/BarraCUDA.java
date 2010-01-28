@@ -9,7 +9,7 @@ public class BarraCUDA
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 200;
+	public static final int NUM_PARTICLES = 150;
 	public static void main(String[] args)
 	{
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
@@ -54,7 +54,8 @@ public class BarraCUDA
 			
 			try 
 			{
-				Thread.sleep(2000/NUM_PARTICLES);
+				Thread.sleep(10);
+				//Thread.sleep(2000/NUM_PARTICLES);
 			} 
 			catch (InterruptedException e) 
 			{
@@ -100,7 +101,7 @@ public class BarraCUDA
 				momy = -momy;
 			}
 			
-			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(800*Math.random() + 50), Math.rint(600*Math.random() + 50), 0));
+			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
 			physicsEngine.initializeChargeMomentum(i, new Vector(momx, momy, 0));
 			physicsEngine.initializeEField(i, new Vector(0,0,0));
 		}
