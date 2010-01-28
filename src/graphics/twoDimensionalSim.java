@@ -80,8 +80,8 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		{
 			PointCharge pc = myIter.next();
 			drawCharge(g, pc);
-			//drawEField(g, pc);
-			drawMomentum(g, pc);
+			drawEField(g, pc);
+			//drawMomentum(g, pc);
 		}
 	}
 	
