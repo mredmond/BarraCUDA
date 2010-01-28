@@ -70,6 +70,8 @@ public class Physics
 						//they're too close. set each one's efield and velocity vecs to zero
 						pc1.myState.touchingOther = true;
 						pc2.myState.touchingOther = true;
+						pc1.myState.touching = pc2;
+						pc2.myState.touching = pc1;
 						//System.out.println("Particle " + pc1.idNum + " is touching particle " + pc2.idNum + ".");
 					}
 					else
@@ -83,8 +85,42 @@ public class Physics
 			}
 			if(pc1.myState.touchingOther)
 			{
+				//2D Collision Response at the moment
+				PointCharge pc2 = pc1.myState.touching;
+				
+				Vector collisionUnitNormal = pc2.myState.position.subtract(pc1.myState.position).normalize();
+				Vector collisionUnitTangent = new Vector(collisionUnitNormal.y, collisionUnitNormal.x, 0);
+				
+				Double v1n = collisionUnitNormal.dot(pc1.myState.velocity);
+				Double v1t = collisionUnitTangent.dot(pc1.myState.velocity);
+				Double v2n = collisionUnitNormal.dot(pc2.myState.velocity);
+				Double v2t = collisionUnitTangent.dot(pc2.myState.velocity);
+				
+				Double v1tprime = v1t;
+				Double v2tprime = v2t;
+				Double v1nprime = (v1n*(pc1.myState.mass - pc2.myState.mass) + v2n*(2*pc2.myState.mass))/(pc1.myState.mass + pc2.myState.mass);
+				Double v2nprime = (v2n*(pc2.myState.mass - pc1.myState.mass) + v1n*(2*pc1.myState.mass))/(pc1.myState.mass + pc2.myState.mass);
+				
+				Vector vec1nprime = collisionUnitNormal.scale(v1nprime);
+				Vector vec1tprime = collisionUnitTangent.scale(v1tprime);
+				Vector vec2nprime = collisionUnitNormal.scale(v2nprime);
+				Vector vec2tprime = collisionUnitTangent.scale(v2tprime);
+				
+				Vector vec1final = vec1nprime.add(vec1tprime);
+				Vector vec2final = vec2nprime.add(vec2tprime);
+				
+				pc1.myState.velocity = vec1final;
+				pc2.myState.velocity = vec2final;
+				
+				
 				pc1.myState.efield.zero();
-				pc1.myState.momentum.zero();
+				pc2.myState.efield.zero();
+				
+				pc1.myState.touchingOther = false;
+				pc2.myState.touchingOther = false;
+				pc1.myState.touching = null;
+				pc1.myState.touching = null;
+				//pc1.myState.momentum.zero();
 			}
 		}
 		

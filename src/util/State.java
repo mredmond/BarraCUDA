@@ -1,10 +1,13 @@
 package util;
 
+import physics.PointCharge;
+
 public class State {
 	// primary
 	public Vector position;
 	public Vector momentum;
 	public Vector efield; //the value of the electric field at this position
+	public PointCharge touching;
 	public Boolean touchingOther;
 
 	//secondary
@@ -27,7 +30,9 @@ public class State {
 		this.mass = mass;
 		this.radius = radius;
 		this.inverseMass = 1 / mass;
+		this.velocity = momentum.scale(inverseMass);
 		this.touchingOther = false;
+		this.touching = null;
 	}
 
 	// interpolation used for animating inbetween states

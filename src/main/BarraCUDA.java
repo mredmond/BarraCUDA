@@ -14,9 +14,9 @@ public class BarraCUDA
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
 		
 		//charge creation: initializes three charges, all with unit mass (the third parameter is mass)
-//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
-//		PointCharge charge1 = new PointCharge(1, 1.0, 1, 2);
-//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
+//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 5);
+//		PointCharge charge1 = new PointCharge(1, 1.0, 1, 5);
+//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 5);
 //		
 //		mainChargeManager.add(charge0);
 //		mainChargeManager.add(charge1);
