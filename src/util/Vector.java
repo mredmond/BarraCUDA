@@ -1,3 +1,5 @@
+//Basic Vector class. Does pretty much everything you'd want a vector to do.
+
 package util;
 
 public class Vector 
@@ -8,7 +10,8 @@ public class Vector
 	{
 	}
 	
-	public Vector(double x, double y, double z) {
+	public Vector(double x, double y, double z) 
+	{
 		this.x = x;
 		this.y = y;
 		this.z = z;

@@ -1,3 +1,5 @@
+/* A single point charge. Pretty simple class, really. It holds its own state.
+ */
 package physics;
 
 import util.State;

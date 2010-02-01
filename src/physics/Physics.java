@@ -1,13 +1,18 @@
+/* This class gives a higher-level interface access to the numerical integration.
+ * It holds a chargeManager identical to the one found in the BarraCUDA.java class, and all of its operations
+ * are done on this arrayList. Most of the methods are self-explanatory, but updateElectorFieldApproximation is not.
+ * This method basically uses Coulomb's Law to determine the force on each particle (taking into consideration the effects of all of the other particles)
+ * and will also do (very very very basic) collision detection. The collision detection is merely there to prevent weird things like interpenetration from happening 
+ * (and they still do happen pretty frequently, so ... yeah).
+ */
 package physics;
 
 import java.util.*;
-
 import util.Vector;
 
 public class Physics 
 {
-
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 25000;
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 25000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -50,12 +55,11 @@ public class Physics
 		{
 			//create the efield acting on one charge
 			Vector sum = new Vector(0,0,0); 
-
 			for(PointCharge pc2: chargeManager)
 			{
 				if(pc2.idNum == pc1.idNum)
 				{
-					//skip this case ... don't want to add a particle to it's own e-field
+					//skip this case ... don't want to add a particle to its own e-field
 				}
 				else
 				{
@@ -67,7 +71,7 @@ public class Physics
 
 					if(rDiff.length() < pc2.myState.radius + pc1.myState.radius) //only add if the particles are suitably far apart
 					{
-						//they're too close. set each one's efield and velocity vecs to zero
+						//they're too close. get ready for collision detection
 						pc1.myState.touchingOther = true;
 						pc2.myState.touchingOther = true;
 						pc1.myState.touching = pc2;
@@ -79,13 +83,14 @@ public class Physics
 						Vector numerator = rDiff.scale(qi);
 						double inverseDenominator = Math.pow((rDiff.length()), -3);
 						sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
-						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work
+						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work. 
 					}
 				}
 			}
 			if(pc1.myState.touchingOther)
 			{
-				//2D Collision Response at the moment. works for same-charge collision
+				//2D Collision Response at the moment. 
+				//kind of touchy... would probably think hard about where I am doing this test (shouldn't it be inside the main loop and not the forces update?)
 				PointCharge pc2 = pc1.myState.touching;
 				
 				Vector collisionUnitNormal = pc2.myState.position.subtract(pc1.myState.position).normalize();

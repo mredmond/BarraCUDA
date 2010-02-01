@@ -1,3 +1,9 @@
+/* The data structure for the numerical integrator.
+ * Every pointCharge has a state, which contains the variables listed below.
+ * Velocity (as a secondary variable) is not dealt with directly, but rather recomputed from momentum.
+ * I'm anticipating a need to do rendertime-based interpolation, so I provide a method for alpha-based linear interpolation.
+ */
+
 package util;
 
 import physics.PointCharge;

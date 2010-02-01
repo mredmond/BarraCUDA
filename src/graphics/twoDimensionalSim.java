@@ -1,3 +1,15 @@
+/* This class encapsulates the graphics object that is printed to the screen after each physics update.
+ * 
+ * 
+ *  
+ *  
+ *  
+ *  
+ *  
+ * 
+ *  */
+
+
 package graphics;
 
 import java.awt.Color;
@@ -9,21 +21,15 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
-
 import javax.swing.*;
-
 import main.BarraCUDA;
-
 import physics.PointCharge;
 
 public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener
 {
-	
 	public twoDimensionalSim()
 	{
-		
-		createAndShowGUI();
-		
+		createAndShowGUI();	
 	}
 	
 	public void setSize(Dimension d)
@@ -32,10 +38,10 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		repaint();
 	}
 	
+	//This method initializes all of the menus. At the moment, these menus are non-functional.
 	public void createAndShowGUI()
 	{
 		JFrame frame = new JFrame();
-		//frame.setBounds(0, 0, 1024, 768);
 		frame.setSize(1280, 1024);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			
@@ -58,16 +64,14 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		fileMenu.add(step);
 		
 		menuBar.add(fileMenu);
-		
 		frame.setJMenuBar(menuBar);
-		
-		
-
 		frame.add(this);
-		
 		frame.setVisible(true);
 	}
 	
+	//This method accesses the global arrayList held in the BarraCUDA main class. 
+	//It will paint each charge, as well as its electric field vector (representing acceleration)
+	//or its momentum vector (chosen by default... if you want the other one, uncomment it) 
 	public void paint(Graphics g)
 	{
 		super.paint(g);
@@ -85,42 +89,28 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		}
 	}
 	
+	//This method draws a charge according to its position and parity.
 	public void drawCharge(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge > 0)
-		{
-			g.setColor(Color.BLUE);
-		}
-		else if(pc.myState.charge < 0)
-		{
-			g.setColor(Color.RED);
-		}
-		else 
-		{
-			g.setColor(Color.LIGHT_GRAY);
-		}
+		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
+		else if(pc.myState.charge < 0) g.setColor(Color.RED);
+		else g.setColor(Color.LIGHT_GRAY);
 		
-		//draws the particle
+		//Actually draw the particle
 		g.fillOval((int) Math.round(pc.myState.position.x - pc.myState.radius), (int) Math.round(pc.myState.position.y - pc.myState.radius), (int) Math.round(2*pc.myState.radius), (int) Math.round(2*pc.myState.radius));
 	}
 	
+	//Draw the electric field vector on any point charge.
 	public void drawEField(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge > 0)
-		{
-			g.setColor(Color.BLUE);
-		}
-		else if(pc.myState.charge < 0)
-		{
-			g.setColor(Color.RED);
-		}
-		else 
-		{
-			g.setColor(Color.LIGHT_GRAY);
-		}
+		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
+		else if(pc.myState.charge < 0) g.setColor(Color.RED);
+		else g.setColor(Color.LIGHT_GRAY);
+		
 		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myState.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
 	}
 	
+	//Draw the momentum on any point charge.
 	public void drawMomentum(Graphics g, PointCharge pc)
 	{
 		g.setColor(Color.black);
@@ -128,6 +118,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	}
 
 	@Override
+	//Non-functional menus. Might be implemented at some point, might not.
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		String command = arg0.getActionCommand();
@@ -142,13 +133,12 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		else if(command.equals("pause"))
 		{
 			//do pause handling
-		}
-		
+		}	
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent e) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 }

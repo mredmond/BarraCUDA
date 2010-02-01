@@ -1,6 +1,9 @@
+/* The derivative structure used by the RK4 integrator. Very simple.
+ * 
+ * 
+ */
+
 package util;
-
-
 public class Derivative
 {
 	public Vector dx; //velocity
