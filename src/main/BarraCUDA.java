@@ -9,7 +9,7 @@ public class BarraCUDA
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 150;
+	public static final int NUM_PARTICLES = 130;
 	public static void main(String[] args)
 	{
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
@@ -72,7 +72,7 @@ public class BarraCUDA
 			double charge = Math.random();
 			double chargeSignModifier = Math.random();
 			double mass = 1;
-			double radius = 2;
+			double radius = 5;
 			
 			if(chargeSignModifier <= 0.5)
 			{
