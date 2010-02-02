@@ -26,13 +26,43 @@
 \clearpage
 
 \section{Abstract}
+The BarraCUDA (Beginner's Analytic Research and Rendering Architecture over C Unified Device Architecture) project will ultimately entail a small-scale homebrew supercomputer designed around the NVIDIA CUDA architecture, as well as a set of simulation programs coded to take advantage of this CUDA architecture. The project is meant to serve as an introductory platform for student-researchers to develop parallel-programming skills, and design programs that showcase concepts in modern science research through real-time visualization. The initial seed for this projected was planted by Dr. Kayvon Fatahalian, a graphics researcher at Stanford University. The hardware aspect of the BarraCUDA project will be completed over a different time frame, but before the hardware is finished, I intend to develop and (on a less powerful computer) test a comprehensive and accurate three dimensional simulation of electrodynamics. This project will explore the vast world of scientific computing through the lens of a physicist, and should provide ample opportunities for me to learn new techniques in computational physics as well as numerical analysis.
 
 \section{Introduction} %why is this interesting to explore?
+Through my Applied Science Research and Computer Science classes, I've gradually become aware of the growing importance of high performance computational power in the fields of physical, chemical, and biological research. A small sample of these problems can be found at http://www.nvidia.com/object/cuda_home.html, but three particularly interesting ones (that seems to form a representative sample of the types of problems that one can approach with supercomputing resources) are [1], [2], and [3]. Because of my experiences over the last summer, I'm also quite interested in learning more about neutron scattering and visual representations of physical modeling problems. Last summer, I got a chance to work in Caltech's materials physics lab on the DANSE project. The DANSE project uses distributed computational analysis to model the theoretical results of neutron scattering experiments before actually conducting them, and at Caltech, I was exposed to the elegant concept and power of a Beowulf cluster. I realized that our high school could make good use of such a powerful tool (on a smaller scale) for instructional purposes, in the demonstration/visualization of scientific concepts as well as the programming process.
+
+I'd like to operate a CUDA-based supercomputer based largely on NVIDIA's CUDA  platform, because CUDA represents the new direction that high performance computing is moving in: instead of waiting for a single fast CPU to perform heavy calculations sequentially, these calculations are farmed out in parallel to hundreds of individual GPU cores for computation. The actual performance speed-up (across diverse applications) is reported by various sources [4] to be anything from 5x to 2600x faster than a CPU-based system.  Furthermore, the CUDA architecture is alive and well-supported by the community, with various development tools available, and many new applications released frequently. CUDA is supported on several chipsets, but the two most suitable consumer-grade architectures for this project are the NVIDIA GeForce GTX295 and the NVIDIA Tesla C1060. Ideally, I would be able to use the Tesla boards, as they are optimized for supercomputing, but unless I am able to get them donated by NVIDIA, they are out of my price range.
+
+Completing this project would provide me with a fair background in supercomputer design and construction, as well as an opportunity to learn the parallel programming skills that I'll need to be a successful researcher in the future. The programming API OpenMP is well-known and widely supported in the scientific computing community, and I'd like to gain further experience working with it on a platform that can unlock all of its power.
+
+The bottom line here is that supercomputing as a field continues to grow very rapidly, and most pure sciences are relying upon supercomputing to provide a basis for . It's particularly interesting to explore the underpinnings of graphics processor based supercomputing because 
+
+why is it interesting to explore
+
+what relevance will it have in the future?
+
 
 \section{Theory}
 
 \section{The Next Steps}
 
+\section{Citations}
+\begin{verbatim}
+[1] CUDA-Based Incompressible Navier-Stokes Solver. Julien Thibault and Inanc Senocak.
+
+<http://coen.boisestate.edu/senocak/files/BSU_CUDA_Res_v5.pdf>
+
+[2] TeraFlop Computing on a Desktop PC with GPUs for 3D CDF. J. Tolke and  M. Krafczyk.  
+
+<http://www.irmb.bau.tu-bs.de/UPLOADS/toelke/Publication/toelkeD3Q13.pdf>
+
+[3] CUDA Acceleration of Molecular Dynamics. David Kirk and Wen-mei W. Hwu.  
+
+<http://www.ks.uiuc.edu/Research/gpu/files/lecture8casestudies.pdf>
+
+[4] NVIDIA CUDA Project Repository. <http://www.nvidia.com/object/cuda_home.html#>
+\end{verbatim}
+
 \appendix
-\section{Appendix A: Source}
+\section{Source Code}
 \end{document}
