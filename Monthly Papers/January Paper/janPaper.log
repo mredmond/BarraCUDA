@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  1 FEB 2010 18:59
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  3 FEB 2010 23:18
 entering extended mode
 **C:/Users/mredmond/workspace/BarraCUDA/Monthly*Papers/January*Paper/janPaper.t
 ex
@@ -88,31 +88,48 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 24.
 
 ("C:\Users\mredmond\workspace\BarraCUDA\Monthly Papers\January Paper\janPaper.t
-oc")
+oc"
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 4.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 4.
+)
 \tf@toc=\write3
  [1
 
-{C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}] [2
+{C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}]
+Overfull \hbox (8.01334pt too wide) in paragraph at lines 32--33
+\OT1/cmr/m/n/10 cal re-search. A small sam-ple of these prob-lems can be found 
+at http://www.nvidia.com/object/cudahome.html,
+ []
 
-]
+[2
+
+] [3] [4] [5]
 ("C:\Users\mredmond\workspace\BarraCUDA\Monthly Papers\January Paper\janPaper.a
 ux") ) 
 Here is how much of TeX's memory you used:
- 915 strings out of 495285
- 12218 string characters out of 3179869
- 59146 words of memory out of 3000000
- 4157 multiletter control sequences out of 15000+200000
- 7588 words of font info for 27 fonts, out of 3000000 for 9000
+ 920 strings out of 495285
+ 12282 string characters out of 3179869
+ 63146 words of memory out of 3000000
+ 4161 multiletter control sequences out of 15000+200000
+ 8063 words of font info for 29 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 25i,6n,21p,276b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,6n,21p,1520b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx10.
 pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pf
-b><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/
-Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on janPaper.pdf (2 pages, 60038 bytes).
+b><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+<C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C
+:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program
+ Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files 
+(x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x
+86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on janPaper.pdf (5 pages, 149892 bytes).
 PDF statistics:
- 29 PDF objects out of 1000 (max. 8388607)
+ 62 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
