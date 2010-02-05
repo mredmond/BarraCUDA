@@ -12,7 +12,8 @@ import util.Vector;
 
 public class Physics 
 {
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 50000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
+	public double energyTotalChecksum = 0;
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 15000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -131,14 +132,59 @@ public class Physics
 		
 	}
 
+	
+	//used as a metric to test the accuracy of the simulation...
+	//because efield is a conservative field, this shouldn't change much
+	//between diff. iterations.
+	public double updateEnergyTotalChecksum()
+	{
+		double totalEnergy = 0;
+		totalEnergy += updatePotentialEnergy();
+		totalEnergy += updateKineticEnergy();
+		return totalEnergy;
+		
+	}
+	
+	public double updatePotentialEnergy()
+	{
+		//computes potential energy U = 1/(4*pi*e_0) * (pairwise sum over particle's charge/distance)
+		double prescaledEnergy = 0;
+		for(PointCharge pc1: chargeManager)
+		{
+			for(PointCharge pc2: chargeManager)
+			{
+				if(!pc1.equals(pc2))
+				{
+					prescaledEnergy += (pc1.myState.charge * pc2.myState.charge)/((pc1.myState.position.subtract(pc2.myState.position)).length());
+				}
+			}
+		}
+		
+		prescaledEnergy /= 2; //divided by two because each pair is actually counted twice.
+		return GRAPHICS_EFIELD_SCALE_FACTOR*prescaledEnergy;
+		
+	}
+	
+	public double updateKineticEnergy()
+	{
+		double prescaledEnergy = 0;
+		for(PointCharge pc : chargeManager)
+		{
+			prescaledEnergy += 0.5 * pc.myState.mass * pc.myState.velocity.length() * pc.myState.velocity.length();
+		}
+		return prescaledEnergy;
+	}
+	
 	public void updateAll(double t, double dt) 
 	{
 		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
+		System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
+		
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
-
+		System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
 	}
 
 }

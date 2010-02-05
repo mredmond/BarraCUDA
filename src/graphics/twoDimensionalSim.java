@@ -35,31 +35,31 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		JFrame frame = new JFrame();
 		frame.setSize(1280, 1024);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("Controls");
-		
+
 		JMenuItem pause = new JMenuItem("Pause ||");
 		pause.addActionListener(this);
 		pause.setActionCommand("pause");
 		fileMenu.add(pause);
-		
+
 		JMenuItem play = new JMenuItem("Play  |>");
 		play.addActionListener(this);
 		play.setActionCommand("play");
 		fileMenu.add(play);
-		
+
 		JMenuItem step = new JMenuItem("Step Forward  ->");
 		step.addActionListener(this);
 		step.setActionCommand("step");
 		fileMenu.add(step);
-		
+
 		menuBar.add(fileMenu);
 		frame.setJMenuBar(menuBar);
 		frame.add(this);
 		frame.setVisible(true);
 	}
-	
+
 	//This method accesses the global arrayList held in the BarraCUDA main class. 
 	//It will paint each charge, as well as its electric field vector (representing acceleration)
 	//or its momentum vector (chosen by default... if you want the other one, uncomment it) 
@@ -69,7 +69,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		ArrayList<PointCharge> charges = BarraCUDA.mainChargeManager;
 		g.setColor(Color.white);
 		g.fillRect(0,0,this.getBounds().width,this.getBounds().height);
-		
+
 		Iterator<PointCharge> myIter = charges.iterator();
 		while(myIter.hasNext())
 		{
@@ -79,28 +79,35 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 			drawMomentum(g, pc);
 		}
 	}
-	
+
 	//This method draws a charge according to its position and parity.
 	public void drawCharge(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
-		else if(pc.myState.charge < 0) g.setColor(Color.RED);
+		double alpha = pc.myState.mass;
+		if(pc.myState.charge > 0)
+		{
+			g.setColor(new Color(0f,0f,1,(float) alpha));
+		}
+		else if(pc.myState.charge < 0)
+		{
+			g.setColor(new Color(1,0f,0f,(float) alpha));
+		}
 		else g.setColor(Color.LIGHT_GRAY);
-		
+
 		//Actually draw the particle
 		g.fillOval((int) Math.round(pc.myState.position.x - pc.myState.radius), (int) Math.round(pc.myState.position.y - pc.myState.radius), (int) Math.round(2*pc.myState.radius), (int) Math.round(2*pc.myState.radius));
 	}
-	
+
 	//Draw the electric field vector on any point charge.
 	public void drawEField(Graphics g, PointCharge pc)
 	{
 		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
 		else if(pc.myState.charge < 0) g.setColor(Color.RED);
 		else g.setColor(Color.LIGHT_GRAY);
-		
+
 		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myState.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
 	}
-	
+
 	//Draw the momentum on any point charge.
 	public void drawMomentum(Graphics g, PointCharge pc)
 	{

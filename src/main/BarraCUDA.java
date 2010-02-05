@@ -78,8 +78,8 @@ public class BarraCUDA
 		{
 			double charge = Math.random();
 			double chargeSignModifier = Math.random();
-			double mass = 1;
-			double radius = 5;
+			double mass = Math.random();
+			double radius = 3;
 			
 			if(chargeSignModifier <= 0.5)
 			{
