@@ -1,6 +1,4 @@
 /* The derivative structure used by the RK4 integrator. Very simple.
- * 
- * 
  */
 
 package util;

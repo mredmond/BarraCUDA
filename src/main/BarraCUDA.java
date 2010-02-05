@@ -5,7 +5,6 @@
  * The graphics module is design as a plug and play style class, so it can be swapped out for a three-dimensional one soon.
  */
 
-
 package main;
 import graphics.twoDimensionalSim;
 import java.util.ArrayList;
@@ -52,11 +51,7 @@ public class BarraCUDA
 		
 		//Auto Initialization
 		initializeCharges(NUM_PARTICLES);
-		
-		
-		
-		
-		
+				
 		
 		//Main update loop. Does one physics iteration, then renders scene.
 		double dt = 0.01;
@@ -75,7 +70,6 @@ public class BarraCUDA
 			myGraphicsObj.repaint();
 		}
 	}
-	
 	
 	//Does what it says on the tin: adds n random charges to the physics engine
 	public static void addRandomCharges(int n)
@@ -97,7 +91,6 @@ public class BarraCUDA
 		}
 	}
 	
-	
 	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector, and gives them a random momentum
 	public static void initializeCharges(int n)
 	{
@@ -115,8 +108,7 @@ public class BarraCUDA
 			{
 				momy = -momy;
 			}
-			
-			
+				
 			//The magic numbers in the first line here are scaled to deal with the resolution 1280 x 1024, but can be adjusted accordingly.
 			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
 			physicsEngine.initializeChargeMomentum(i, new Vector(momx, momy, 0));

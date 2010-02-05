@@ -1,14 +1,7 @@
 /* This class encapsulates the graphics object that is printed to the screen after each physics update.
- * 
- * 
- *  
- *  
- *  
- *  
- *  
- * 
- *  */
-
+ * It contains a paint method, and tracks the global array that holds the pointCharges.
+ * This is a plug-and-play implementation, designed to be flexibly replaced by an OpenGL implementation.
+ *   */
 
 package graphics;
 
@@ -31,13 +24,11 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	{
 		createAndShowGUI();	
 	}
-	
 	public void setSize(Dimension d)
 	{
 		super.setSize(d);
 		repaint();
 	}
-	
 	//This method initializes all of the menus. At the moment, these menus are non-functional.
 	public void createAndShowGUI()
 	{
@@ -135,7 +126,6 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 			//do pause handling
 		}	
 	}
-
 	@Override
 	public void itemStateChanged(ItemEvent e) 
 	{
