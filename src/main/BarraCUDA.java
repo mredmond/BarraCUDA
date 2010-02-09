@@ -22,10 +22,10 @@ public class BarraCUDA
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
 		
 //		Manual charge creation
-//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 5);
-//		PointCharge charge1 = new PointCharge(1, 1.0, 1, 5);
-//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 5);
-//		
+//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
+//		PointCharge charge1 = new PointCharge(1, -1.0, 1, 2);
+//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
+		
 //		mainChargeManager.add(charge0);
 //		mainChargeManager.add(charge1);
 //		mainChargeManager.add(charge2);
@@ -54,19 +54,19 @@ public class BarraCUDA
 				
 		
 		//Main update loop. Does one physics iteration, then renders scene.
-		double dt = 0.01;
+		double dt = 0.001;
 		for(double t = 0.0; t <= 30.000; t+=dt)
 		{
 			physicsEngine.updateAll(t, dt);
-			try 
-			{
-				Thread.sleep(10);
-				//Thread.sleep(2000/NUM_PARTICLES); //scales wait time to deal with number of particles? not very useful
-			} 
-			catch (InterruptedException e) 
-			{
-				e.printStackTrace();
-			}
+//			try 
+//			{
+//				Thread.sleep(1);
+//				//Thread.sleep(2000/NUM_PARTICLES); //scales wait time to deal with number of particles? not very useful
+//			} 
+//			catch (InterruptedException e) 
+//			{
+//				e.printStackTrace();
+//			}
 			myGraphicsObj.repaint();
 		}
 	}
@@ -78,8 +78,8 @@ public class BarraCUDA
 		{
 			double charge = Math.random();
 			double chargeSignModifier = Math.random();
-			double mass = Math.random();
-			double radius = 3;
+			double mass = 1;
+			double radius = 2;
 			
 			if(chargeSignModifier <= 0.5)
 			{

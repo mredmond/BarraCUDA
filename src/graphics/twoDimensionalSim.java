@@ -83,14 +83,16 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	//This method draws a charge according to its position and parity.
 	public void drawCharge(Graphics g, PointCharge pc)
 	{
-		double alpha = pc.myState.mass;
+		//double alpha = pc.myState.mass;
 		if(pc.myState.charge > 0)
 		{
-			g.setColor(new Color(0f,0f,1,(float) alpha));
+			//g.setColor(new Color(0f,0f,1,(float) alpha));
+			g.setColor(Color.blue);
 		}
 		else if(pc.myState.charge < 0)
 		{
-			g.setColor(new Color(1,0f,0f,(float) alpha));
+			//g.setColor(new Color(1,0f,0f,(float) alpha));
+			g.setColor(Color.red);
 		}
 		else g.setColor(Color.LIGHT_GRAY);
 

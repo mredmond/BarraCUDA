@@ -12,8 +12,7 @@ import util.Vector;
 
 public class Physics 
 {
-	public double energyTotalChecksum = 0;
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 15000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
+	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 35000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -178,13 +177,14 @@ public class Physics
 	public void updateAll(double t, double dt) 
 	{
 		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
-		System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
+		//System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
 		
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
-		System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
+		System.out.println("Energy: " + updateEnergyTotalChecksum());
+		//System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
 	}
 
 }
