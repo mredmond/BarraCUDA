@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  4 FEB 2010 23:15
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  5 FEB 2010 10:03
 entering extended mode
 **C:/Users/mredmond/workspace/BarraCUDA/Project*Proposal/Senior*Project*Proposa
 l*Variant/LaTeX*Stuff/SPProposal.tex
@@ -88,16 +88,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 25.
 
-! Undefined control sequence.
-l.26 \text
-          {Cell: 650-796-7858; Parent's Cell: 650-868-2479; Proposed Supervi...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
 ("C:\Users\mredmond\workspace\BarraCUDA\Project Proposal\Senior Project Proposa
 l Variant\LaTeX Stuff\SPProposal.toc"
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -111,27 +101,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 {C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}] [2
 
 ] [3] [4]
-Overfull \hbox (317.73814pt too wide) in paragraph at lines 111--111
-[]\OT1/cmtt/m/n/10 [2] CUDA-Based Incompressible Navier-Stokes Solver. Julien T
-hibault and Inanc Senocak.  <http://coen.boisestate.edu/senocak/files/BSU_CUDA_
-Res_v5.pdf>[] 
- []
-
-
-Overfull \hbox (380.7376pt too wide) in paragraph at lines 111--111
-[]\OT1/cmtt/m/n/10 [3] TeraFlop Computing on a Desktop PC with GPUs for 3D CDF.
- J. Tolke and  M. Krafczyk.  <http://www.irmb.bau.tu-bs.de/UPLOADS/toelke/Publi
-cation/toelkeD3Q13.pdf>[] 
- []
-
-
-Overfull \hbox (286.23842pt too wide) in paragraph at lines 111--111
-[]\OT1/cmtt/m/n/10 [4] CUDA Acceleration of Molecular Dynamics. David Kirk and 
-Wen-mei W. Hwu.  <http://www.ks.uiuc.edu/Research/gpu/files/lecture8casestudies
-.pdf>[] 
- []
-
-
 Overfull \hbox (13.2408pt too wide) in paragraph at lines 111--111
 []\OT1/cmtt/m/n/10 [5] Asrock Supercomputer Video. <http://www.youtube.com/watc
 h?v=_87a6P0-Xjw&feature=related>[] 
@@ -155,7 +124,7 @@ pe1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1
 /public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/pu
 blic/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/publi
 c/amsfonts/cm/cmtt10.pfb>
-Output written on SPProposal.pdf (6 pages, 113206 bytes).
+Output written on SPProposal.pdf (6 pages, 113208 bytes).
 PDF statistics:
  45 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
