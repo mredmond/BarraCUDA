@@ -7,6 +7,7 @@ package graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,10 +50,17 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		play.setActionCommand("play");
 		fileMenu.add(play);
 
-		JMenuItem step = new JMenuItem("Step Forward  ->");
-		step.addActionListener(this);
-		step.setActionCommand("step");
-		fileMenu.add(step);
+		JMenuItem increase = new JMenuItem("Increase Scale Factor");
+		increase.addActionListener(this);
+		increase.setActionCommand("increase");
+		fileMenu.add(increase);
+		
+		JMenuItem decrease = new JMenuItem("Decrease Scale Factor");
+		decrease.addActionListener(this);
+		decrease.setActionCommand("decrease");
+		fileMenu.add(decrease);
+		
+		
 
 		menuBar.add(fileMenu);
 		frame.setJMenuBar(menuBar);
@@ -67,9 +75,12 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	{
 		super.paint(g);
 		ArrayList<PointCharge> charges = BarraCUDA.mainChargeManager;
+		
 		g.setColor(Color.white);
 		g.fillRect(0,0,this.getBounds().width,this.getBounds().height);
-
+		g.setColor(Color.black);
+		g.drawString("Current Field Strength Scale: " + BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR, 50, 50);
+		
 		Iterator<PointCharge> myIter = charges.iterator();
 		while(myIter.hasNext())
 		{
@@ -126,9 +137,13 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		{
 			//do play event handling
 		}
-		else if(command.equals("step"))
+		else if(command.equals("increase"))
 		{
-			//do step handling
+			BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR *= 1.10;
+		}
+		else if(command.equals("decrease"))
+		{
+			BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR *= 0.9;
 		}
 		else if(command.equals("pause"))
 		{

@@ -12,7 +12,7 @@ import util.Vector;
 
 public class Physics 
 {
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 35000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
+	public double GRAPHICS_EFIELD_SCALE_FACTOR = 50000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
