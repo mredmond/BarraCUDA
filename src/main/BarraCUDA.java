@@ -16,61 +16,58 @@ public class BarraCUDA
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
 	public static final int NUM_PARTICLES = 130;
+	public static boolean paused = false;
 	public static void main(String[] args)
 	{
 		//Makes a new graphics object to render into
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
-		
-//		Manual charge creation
-//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
-//		PointCharge charge1 = new PointCharge(1, -1.0, 1, 2);
-//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
-		
-//		mainChargeManager.add(charge0);
-//		mainChargeManager.add(charge1);
-//		mainChargeManager.add(charge2);
+
+		//		Manual charge creation
+		//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
+		//		PointCharge charge1 = new PointCharge(1, -1.0, 1, 2);
+		//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
+
+		//		mainChargeManager.add(charge0);
+		//		mainChargeManager.add(charge1);
+		//		mainChargeManager.add(charge2);
 
 		//Auto Initialization
 		addRandomCharges(NUM_PARTICLES);
-		
+
 		//physics engine object initialization
 		physicsEngine = new Physics(mainChargeManager);
 
-//		Manual state initialization
-//		physicsEngine.initializeChargePosition(0, new Vector(300, 200, 0));
-//		physicsEngine.initializeChargeMomentum(0, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(0, new Vector(0,0,0));
-//
-//		physicsEngine.initializeChargePosition(1, new Vector(400, 200, 0));
-//		physicsEngine.initializeChargeMomentum(1, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(1, new Vector(0,0,0));
-//
-//		physicsEngine.initializeChargePosition(2, new Vector(350, 150, 0));
-//		physicsEngine.initializeChargeMomentum(2, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(2, new Vector(0,0,0));
-		
+		//		Manual state initialization
+		//		physicsEngine.initializeChargePosition(0, new Vector(300, 200, 0));
+		//		physicsEngine.initializeChargeMomentum(0, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(0, new Vector(0,0,0));
+		//
+		//		physicsEngine.initializeChargePosition(1, new Vector(400, 200, 0));
+		//		physicsEngine.initializeChargeMomentum(1, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(1, new Vector(0,0,0));
+		//
+		//		physicsEngine.initializeChargePosition(2, new Vector(350, 150, 0));
+		//		physicsEngine.initializeChargeMomentum(2, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(2, new Vector(0,0,0));
+
 		//Auto Initialization
 		initializeCharges(NUM_PARTICLES);
-				
-		
+
+
 		//Main update loop. Does one physics iteration, then renders scene.
 		double dt = 0.001;
-		for(double t = 0.0; t <= 30.000; t+=dt)
+		double t = 0;
+		while(true)
 		{
-			physicsEngine.updateAll(t, dt);
-//			try 
-//			{
-//				Thread.sleep(1);
-//				//Thread.sleep(2000/NUM_PARTICLES); //scales wait time to deal with number of particles? not very useful
-//			} 
-//			catch (InterruptedException e) 
-//			{
-//				e.printStackTrace();
-//			}
-			myGraphicsObj.repaint();
+			while(!paused)
+			{
+				physicsEngine.updateAll(t, dt);
+				myGraphicsObj.repaint();
+			}
+			t += dt;
 		}
 	}
-	
+
 	//Does what it says on the tin: adds n random charges to the physics engine
 	public static void addRandomCharges(int n)
 	{
@@ -80,17 +77,17 @@ public class BarraCUDA
 			double chargeSignModifier = Math.random();
 			double mass = 1;
 			double radius = 2;
-			
+
 			if(chargeSignModifier <= 0.5)
 			{
 				charge = -charge;
 			}
-			
+
 			PointCharge pc = new PointCharge(i,charge,mass,radius);
 			mainChargeManager.add(pc);
 		}
 	}
-	
+
 	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector, and gives them a random momentum
 	public static void initializeCharges(int n)
 	{
@@ -108,7 +105,7 @@ public class BarraCUDA
 			{
 				momy = -momy;
 			}
-				
+
 			//The magic numbers in the first line here are scaled to deal with the resolution 1280 x 1024, but can be adjusted accordingly.
 			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
 			physicsEngine.initializeChargeMomentum(i, new Vector(momx, momy, 0));

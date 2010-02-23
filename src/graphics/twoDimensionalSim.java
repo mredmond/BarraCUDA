@@ -14,12 +14,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.*;
 import main.BarraCUDA;
 import physics.PointCharge;
+import util.Vector;
 
-public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener
+public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener, MouseListener
 {
 	public twoDimensionalSim()
 	{
@@ -66,6 +71,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		frame.setJMenuBar(menuBar);
 		frame.add(this);
 		frame.setVisible(true);
+		frame.addMouseListener(this);
 	}
 
 	//This method accesses the global arrayList held in the BarraCUDA main class. 
@@ -129,13 +135,12 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	}
 
 	@Override
-	//Non-functional menus. Might be implemented at some point, might not.
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		String command = arg0.getActionCommand();
 		if(command.equals("play"))
 		{
-			//do play event handling
+			BarraCUDA.paused = false;
 		}
 		else if(command.equals("increase"))
 		{
@@ -147,12 +152,46 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		}
 		else if(command.equals("pause"))
 		{
-			//do pause handling
+			BarraCUDA.paused = true;
 		}	
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) 
 	{
 		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) 
+	{
+		System.out.println("Button num " + arg0.getButton() + " was pressed.");
+		BarraCUDA.paused = true;
+		double charge = (arg0.getButton() == 1) ? 1.0 : -1.0;
+		int posX = arg0.getX() - 3; //offsets
+		int posY = arg0.getY() - 52;
+		int id = BarraCUDA.physicsEngine.chargeManager.size();
+		BarraCUDA.physicsEngine.chargeManager.add(id, new PointCharge(id, charge, 1, 2));
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.position = new Vector((double) posX, (double) posY, 0);
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.momentum = new Vector(0, 0, 0);
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.efield = new Vector(0, 0, 0);
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

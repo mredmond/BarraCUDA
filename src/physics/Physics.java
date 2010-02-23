@@ -12,7 +12,7 @@ import util.Vector;
 
 public class Physics 
 {
-	public double GRAPHICS_EFIELD_SCALE_FACTOR = 50000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
+	public double GRAPHICS_EFIELD_SCALE_FACTOR = 150000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -51,12 +51,16 @@ public class Physics
 	{
 		//This method updates the efield vector for each point charge in the chargeManager.
 		//It is used in the NumericalIntegration class for determining forces.
-		for(PointCharge pc1 : chargeManager)
+		Iterator<PointCharge> outerIter = chargeManager.iterator();
+		while(outerIter.hasNext())
 		{
+			PointCharge pc1 = outerIter.next();
 			//create the efield acting on one charge
 			Vector sum = new Vector(0,0,0); 
-			for(PointCharge pc2: chargeManager)
+			Iterator<PointCharge> innerIterator = chargeManager.iterator();
+			while(innerIterator.hasNext())
 			{
+				PointCharge pc2 = (PointCharge) innerIterator.next();
 				if(pc2.idNum == pc1.idNum)
 				{
 					//skip this case ... don't want to add a particle to its own e-field
@@ -183,7 +187,8 @@ public class Physics
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
-		System.out.println("Energy: " + updateEnergyTotalChecksum());
+		
+		//System.out.println("Energy: " + updateEnergyTotalChecksum());
 		//System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
 	}
 
