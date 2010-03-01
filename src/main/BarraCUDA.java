@@ -15,7 +15,7 @@ public class BarraCUDA
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 130;
+	public static final int NUM_PARTICLES = 50;
 	public static boolean paused = false;
 	public static void main(String[] args)
 	{

@@ -12,6 +12,7 @@ import util.Vector;
 
 public class Physics 
 {
+	public double eps = 0.00000000000001;
 	public double GRAPHICS_EFIELD_SCALE_FACTOR = 150000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
@@ -85,7 +86,7 @@ public class Physics
 					else
 					{
 						Vector numerator = rDiff.scale(qi);
-						double inverseDenominator = Math.pow((rDiff.length()), -3);
+						double inverseDenominator = Math.pow((rDiff.length() + eps), -3);
 						sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
 						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work. 
 					}
@@ -139,6 +140,17 @@ public class Physics
 	//used as a metric to test the accuracy of the simulation...
 	//because efield is a conservative field, this shouldn't change much
 	//between diff. iterations.
+	
+	public Vector updateMomentumChecksum()
+	{
+		Vector totalMomentum = new Vector(0,0,0);
+		for(PointCharge pc1 : chargeManager)
+		{
+			totalMomentum = totalMomentum.add(pc1.myState.momentum);
+		}
+		return totalMomentum;
+	}
+	
 	public double updateEnergyTotalChecksum()
 	{
 		double totalEnergy = 0;
@@ -182,11 +194,12 @@ public class Physics
 	{
 		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
 		//System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
-		
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
+		
+		System.out.println("Momentum: " + updateMomentumChecksum() + " Magnitude: " + updateMomentumChecksum().length());
 		
 		//System.out.println("Energy: " + updateEnergyTotalChecksum());
 		//System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
