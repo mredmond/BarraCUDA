@@ -15,7 +15,7 @@ public class BarraCUDA
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 50;
+	public static final int NUM_PARTICLES = 150;
 	public static boolean paused = false;
 	public static void main(String[] args)
 	{
@@ -88,27 +88,14 @@ public class BarraCUDA
 		}
 	}
 
-	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector, and gives them a random momentum
+	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector
 	public static void initializeCharges(int n)
 	{
 		for(int i = 0; i < n; i++)
 		{
-			double momx = Math.random();
-			double momxMod = Math.random();
-			double momy = Math.random();
-			double momyMod = Math.random();
-			if(momxMod <= 0.5)
-			{
-				momx = -momx;
-			}
-			if(momyMod <= 0.5)
-			{
-				momy = -momy;
-			}
-
 			//The magic numbers in the first line here are scaled to deal with the resolution 1280 x 1024, but can be adjusted accordingly.
 			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
-			physicsEngine.initializeChargeMomentum(i, new Vector(momx, momy, 0));
+			physicsEngine.initializeChargeMomentum(i, new Vector(0, 0, 0));
 			physicsEngine.initializeEField(i, new Vector(0,0,0));
 		}
 	}
