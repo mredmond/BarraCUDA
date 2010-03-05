@@ -21,6 +21,13 @@
 \begin{document}
 \maketitle
 \tableofcontents
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{barracuda2DScreenshot.png}
+	\caption{A screenshot of the simulation in action.}
+	\label{fig:barracuda2DScreenshot}
+\end{figure}
+
 \clearpage
 
 \section{Abstract}
@@ -37,7 +44,7 @@ The bottom line here is that supercomputing as a field continues to grow very ra
 This section will be broken down into the various bits of computer science theory behind how the project works, and the physical science theory behind how systems of electrically charged particles interact. Currently (as of March 2010), the simulation is not tuned to run on the CUDA architecture.
 
 \subsection{Supercomputing Theory}
-A GPU-based supercomputer differs from standard CPU-based supercomputers in a number of ways: the most obvious one of these is the actual location and type of the numerical processors. A CPU-based cluster (Aupercomputers and cluster computers will be mentioned interchangeably in this paper; they are equivalent for our purposes) uses processors housed directly on the node motherboard, which communicate directly with the system memory through a high-speed bus. This has the advantage of extremely fast memory read/write operations, but it has the disadvantage (currently) of a relatively small number of available cores for processing. CPU based implementations also have issues recycling computations for fewer wasted cycles. The current top-of-the-line Intel i7-920 runs 8 cores at 1600 MHz each [5]. The GPU, in comparison, resides (generally) in an interface bus. In modern computers, this bus is the PCI express bus, which provides an indirect way of communicating with the memory through a controller chip on the motherboard. The advantage of the GPU-based system is that it can run many more cores than a CPU-based system can (480 cores per card in the BarraCUDA system at 1242 MHz each) [6], but the disadvantage is that it has relatively slower memory read/write times. Most GPUs attempt to deal with this by including memory onboard the card (1796 MB in the BarraCUDA system per card), so the read/write times are reduced to those of a CPU-based system. As one can see, there are significant advantages to using a GPU-based setup.
+A GPU-based supercomputer differs from standard CPU-based supercomputers in a number of ways: the most obvious one of these is the actual location and type of the numerical processors. A CPU-based cluster (Supercomputers and cluster computers will be mentioned interchangeably in this paper; they are equivalent for our purposes) uses processors housed directly on the node motherboard, which communicate directly with the system memory through a high-speed bus. This has the advantage of extremely fast memory read/write operations, but it has the disadvantage (currently) of a relatively small number of available cores for processing. CPU based implementations also have issues recycling computations for fewer wasted cycles. The current top-of-the-line Intel i7-920 runs 8 cores at 1600 MHz each [5]. The GPU, in comparison, resides (generally) in an interface bus. In modern computers, this bus is the PCI express bus, which provides an indirect way of communicating with the memory through a controller chip on the motherboard. The advantage of the GPU-based system is that it can run many more cores than a CPU-based system can (480 cores per card in the BarraCUDA system at 1242 MHz each) [6], but the disadvantage is that it has relatively slower memory read/write times. Most GPUs attempt to deal with this by including memory onboard the card (1796 MB in the BarraCUDA system per card), so the read/write times are reduced to those of a CPU-based system. As one can see, there are significant advantages to using a GPU-based setup.
 
 The main advantage (having drastically more cores) of the GPU-based system is made most clear when a program is designed to UTILIZE all of those cores in parallel. Certain problems lend themselves well to this paradigm; others do not. An example of an easily parallelizable problem is one that can be broken down into a number of sub-tasks, each of which can be computed independently of the other tasks. The n-body electrodynamics problem is a perfect example of an easily parallelizable problem: computing the force on each particle at a given timestep only relies on the previous position of all of the other particles. If we store the point charge positions in an array that is globally accessible by all of the cores, then we can update each particle SIMULTANEOUSLY. This is a HUGE speedup over the sequential calculations enacted by a single-core CPU setup, and provides the motivation for a multiple-core setup in general.
 
@@ -45,7 +52,7 @@ The main advantage (having drastically more cores) of the GPU-based system is ma
 \subsection{Scientific Theory}
 The simulation that is currently in place relies upon Coulomb's Law to generate the electric field acting on each individual point charge. This efield generates a force that is similar to the gravitional force in that it is an inverse-square law, but different because the force vector is signed (instead of always attracting like gravity, it can attract or repel). The force vector acting on a point charge is represented by $\vec{F} = q\vec{E}$, where $q$ is the charge of the particle and $\vec{E}$ is the electric field acting on the particle. The explicit way to compute $\vec{E}$ is to sum up the effects of each other particle in the simulation on the particle in question.
 
-Coulomb's Law gives this electric field sum as $$\vec{E} = \frac{1}{4\pi\epsilon_0}\sum_{i = 1}^n \frac{q_i (\vec{r} - \vec{r_i})}{|\vec{r} - \vec{r_i}|^3}$$ where $\vec{r}$ is the vector to the point that we are testing the electric field at, and $\vec{r_i}$ is the vector of the point we are testing against. As $i$ ranges from $1$ to $n$, we test the electric field against all other particles. This means that updating ONE particle's electric field requires us to check $n-1$ other particle's states, where $n$ is the total number of particles. Updating ALL of the particle's electric fields requires $n(n-1)$ checks, making the n-body electrodynamic simulation a problem known as an $O(n^2)$ problem (it has time complexity asymptotically equal to some constant multiple of $n^2$). These problems scale notoriously badly on standard PC hardware, but with a supercomputer, they become approachable again. There are ways to reduce to speed this problem up (by only considering particles within a certain distance of eachother to have an observable effect) which can reduce the runtime complexity, but these methods trade a gain in speed for a reduction in accuracy. I have decided that accuracy is a more desirable characterstic of my simulation than speed is, so my simulation checks all $n(n-1)$ particles. If it becomes an issue in the future, the range-based solution described above can be implemented.
+Coulomb's Law gives this electric field sum as $$\vec{E} = \frac{1}{4\pi\epsilon_0}\sum_{i = 1}^n \frac{q_i (\vec{r} - \vec{r_i})}{|\vec{r} - \vec{r_i}|^3}$$ where $\vec{r}$ is the vector to the point that we are testing the electric field at, and $\vec{r_i}$ is the vector of the point we are testing against. As $i$ ranges from $1$ to $n$, we test the electric field against all other particles. This means that updating ONE particle's electric field requires us to check $n-1$ other particle's states, where $n$ is the total number of particles. Updating ALL of the particle's electric fields requires $n(n-1)$ checks, making the n-body electrodynamic simulation a problem known as an $O(n^2)$ problem (it has time complexity asymptotically equal to some constant multiple of $n^2$). These problems scale notoriously badly on standard PC hardware, but with a supercomputer, they become approachable again. There are ways to speed this problem up (by only considering particles within a certain distance of each other to have an observable effect) which can reduce the runtime complexity, but these methods trade a gain in speed for a reduction in accuracy.
 
 Coulomb's Law is derived under the assumption that the particles are stationary. When they are moving, Coulomb's Law provides only an approximation to the electric field acting on the particles. In motion, these particle actually generate electromagnetic waves that can perturb the electric field of the others. I will attempt to model the effects of these electromagnetic waves later in the project. For now, Coulomb's Law is the only thing that is used to compute the forces on the particles. Furthermore, the scale factor $\frac{1}{4\pi\epsilon_0}$ is roughly equal to $9 \times 10^9$, which is too large for accurate computation. Because $\epsilon_0$ is defined as $\frac{1}{\mu_0 c^2}$, where $c$ is the speed of light and $\mu_0$ is the magnetic constant (generally defined as $4\pi \times 10^{-7} \frac{H}{m}$), these values are all system-unit dependent. I've introduced a system of units that is normalized to the electron mass, charge, and radius, so this constant scale factor $\frac{1}{4\pi\epsilon_0}$ is absorbed into the graphics engine.
 
@@ -53,13 +60,18 @@ The integrator written for this project is (essentially) a numeric differential 
 
 \clearpage
 \section{Algorithm Implementations And Evaluation}
-Initially, the simulation was conducted as a pure $O(n^2)$ algorithm using the exact, derived form of Coulomb's law to determine the force acting on each particle. This is the most rudimentary simulation possible, and although it is fairly straightforward to implement, it leaves many things to be desired. First, this implementation is remarkably slow when run on systems of particles $N > 250$, which is an unacceptably low threshold. Second, this implementation has great difficulty processing particles that are situated very close together. To test the numerical stability of the first implementation's solutions, a conservation-of-momentum test was run, with results available in the second appendix. Because the collision response code is fully elastic, linear momentum should be conserved between any two timesteps. Ideally, the total momentum vector of the system will remain at <0.0, 0.0, 0.0>, but this is not the case in practice. The first implementation ($O(n^2)$ w/o perturbation) produced a series of momenta vectors that fluctuated wildly between timesteps when a lot of collisions were ocurring. This fluctuation was quantified by a metric of $|(1 - \frac{T(i+1)}{T(i)}|$, where T(i) represents the total momentum at timestep $i$. This metric treats negative momentum change equivalently to positive momentum change, and allows us to average the momentum changes over an entire trial run. To combat the accumulation of integration errors on close-proximity particles, a "perturbation" was added into the denominator of Coulomb's Law, as per [8]. Coulomb's Law transforms into
+Initially, the simulation was conducted as a pure $O(n^2)$ algorithm using the exact, derived form of Coulomb's law to determine the force acting on each particle. This is the most rudimentary simulation possible, and although it is fairly straightforward to implement, it leaves many things to be desired. First, this implementation is remarkably slow when run on systems of particles $N > 250$, which is an unacceptably low threshold. Second, this implementation has great difficulty processing particles that are situated very close together. To test the numerical stability of the first implementation's solutions, a conservation-of-momentum test was run, with results available in the second appendix. Because the collision response code is fully elastic, linear momentum should be conserved between any two timesteps. Ideally, the total momentum vector of the system will remain at $<0, 0, 0>$, but this is not the case in practice. The first implementation ($O(n^2)$ w/o perturbation) produced a series of momenta vectors that fluctuated wildly between timesteps when a lot of collisions were ocurring. This fluctuation was quantified by a metric of $|1 - \frac{T(i+1)}{T(i)}|$, where T(i) represents the total momentum at timestep $i$. This metric treats negative momentum change equivalently to positive momentum change, and allows us to average the momentum changes over an entire trial run. To combat the accumulation of integration errors on close-proximity particles, a ``perturbation'' was added into the denominator of Coulomb's Law, as per [8]. Coulomb's Law transforms into
 
 $$\vec{E} = \frac{1}{4\pi\epsilon_0}\sum_{i = 1}^n \frac{q_i (\vec{r} - \vec{r_i})}{(|\vec{r} - \vec{r_i}| + \epsilon)^3}$$ 
 
-This perturbation by $\epsilon$ reduces the effect of division by an arbitrarily small distance, but also reduces the accuracy of the simulation. The larger the perturbation is, the more "safe" the system is from integration error. Unfortunately, physical accuracy also decreases as the perturbation increases. In this simulation, $\epsilon = 10^{-12}$. This perturbation, when applied to the $O(n^2)$ algorithm, produces a markedly large effect on numerical stability, as visible from the data in the second appendix. The perturbation method implemented here comes out as the clear stability champion, reducing the momentum fluctuations by nearly 85% in the average case between timesteps. The average numerical error can similarly be computed for each implementation by dividing the average delta momentum per timestep by the average total momentum per timestep. For the implementation without perturbation, the average error is $0.000225274$, and for the implementation with perturbation, the average error is $4.9066 \times 10^{-5}$
+\begin{figure}[ht]
+	\centering
+		\includegraphics[scale = 0.75]{graphOfPerturbMomentum.PNG}
+	\caption{This graph displays the total momentum of a system of particles (N = 150) over 50 timesteps.}
+	\label{fig:graphOfPerturbMomentum}
+\end{figure}
 
-Insert graph here of Momentum
+This perturbation by $\epsilon$ reduces the effect of division by an arbitrarily small distance, but also reduces the accuracy of the simulation. The larger the perturbation is, the more "safe" the system is from integration error. Unfortunately, physical accuracy also decreases as the perturbation increases. In this simulation, $\epsilon = 10^{-12}$. This perturbation, when applied to the $O(n^2)$ algorithm, produces a markedly large effect on numerical stability, as visible from the data in the second appendix. The perturbation method implemented here comes out as the clear stability champion, reducing the momentum fluctuations by nearly 85\% in the average case between timesteps. The average numerical error can similarly be computed for each implementation by dividing the average delta momentum per timestep by the average total momentum per timestep. For the implementation without perturbation, the average error is $0.000225274$, and for the implementation with perturbation, the average error is $4.9066 \times 10^{-5}$
 
 \section{Algorithm Speed}
 Although this perturbation handles the numerical stability of the solution, it does nothing to address the speed of the algorithm. A clever algorithm by Barnes and Hut [9] makes use of a special octtree data structure to reduce the problem to $O(n \log n)$, at the expense of physical accuracy. This structure separates space recursively, through the use of splitting planes. It divides all of space into octants, then divides each of these octants into octants, and so on. This recursive data structure is stored as a tree, with a root having 8 leaves, and each leaf has 8 children. This manner of storage is continued until each point resides in its own node of space. The data structure has as many nodes as there are point charges. The clever idea presented by Barnes and Hut is to use the $O(n^2)$ algorithm for every leaf-node on the same tree level as the node under consideration, but treat all other levels as a single, far away charge (composed of a superposition of these other nodes). This is tenable because the inverse square law is less sensitive to error when the points under consideration are far away. The Barnes-Hut algorithm trades off a MUCH faster speed for reduced accuracy. This algorithm essentially treats far away charges as a ``single pole,'' and is generally within 1\% accuracy of the exact $O(n^2)$ pair-wise algorithm. If this algorithm's precision is too low, there exists a seperate $O(n \log n)$ algorithm known as the ``Fast Multipole Model'' (FMM). This method is similar to Barnes-Hut, but does not condense ALL other far particles into a single pole particle. Instead, it makes tradeoffs and condenses some of the nodes into single poles, but leaves these poles collected at the centroid of their respective layers. It condenses the far away points into a few separated single poles. This method is still $O(n \log n)$, but has a worse scaling factor in practice.
@@ -71,12 +83,12 @@ These algorithms are clearly suited to parallelization because their data struct
 Currently, the simulation is able to display two-dimensional interactions between charged particles. The underlying engine is actually processing the vectors as three-dimensional vectors, but three-dimensional graphics haven't been implemented. A fully functional implementation of Coulomb's Law is given in the Physics.java file, and a fully functional Runge-Kutta4 numerical integrator is given in the NumericalIntegration.java file. The graphics are rudimentary at the moment, but they provide a decent visual for what is happening with the particles. The user can toggle the momentum and efield vectors on and off inside of the twoDimensionalSim.java file by commenting and uncommenting the code. The simulation can be paused, and particles (of various charges) can be added upon mouseclick. A lot of the actual explanation for what is being done is provided inside of the code as comments. The simulation is currently running an $O(n^2)$ algorithm with perturbation, and has average numerical precision of $1 - 4.9066 \times 10^{-5} = 0.999950934$
 
 \section{The Next Steps}
-January
+\subsection{For February}
 Fixing collision detection is a short term goal, but a longer term goal is getting three dimensional graphics set up. I'll probably use the OpenGL standard graphics library, or whatever the CUDA IDE provides, as a test bed. Finally, I still need to find a way to interface the simulation (I am looking at a library called JCUDA for this) and parallelize the numerical calculation so that is it suitable for use with the CUDA architecture. As described in the Scientific Theory section, the algorithm is easily parallelized, but the actual low-level core operation might not be. I'll spend some time looking through CUDA documentation and working with OpenMP. 
 
 I have a CUDA-enabled testbed that I will experiment on, and the next highest priority in this project will become the migration of the simulation code to CUDA code. It's likely that this will be fraught with errors, and will require substantial amounts of debugging, but I hope to have the simulation migrated in about a month. The parallelization will require ongoing effort to optimize, but the initial setup should be fairly straightforward. There are a lot of places that this project can go, from increased accuracy to higher speed, to modelling more complicated approximations, and I look forward to approaching all of these avenues.
 
-February
+\subsection{For March}
 I'm also going to migrate to the FMM algorithm soon, and should see a noticeable increase in computation speed. I'll have to work out a metric that lets me determine that physical modeling inaccuracy, but this would require that I *know* the exact solution. I'll look through the literature to check how other researchers evaluate the physical accuracy of their methods. This FMM algorithm can be adapted to arbitrary precision, so if the precision becomes noticeably bad, it is easily correctable. I'm still looking to migrate onto CUDA soon, but it appears that I will need to read more in depth about how CUDA handles shared memory. The memory access part of asynchronous threads seems to be the most difficult part to implement properly. Collision detection has been handled (more or less) by implementing the perturbation to Coulomb's Law. I've been doing a lot of reading on OpenGL interaction with CUDA, and that will be the third step. The new chronology is now 1) Get Parallel-FMM implemented. 2) Migrate to CUDA + Shared Memory. 3) Implement JOGL Graphics/Visualization Software.
 
 
@@ -86,20 +98,42 @@ I'm also going to migrate to the FMM algorithm soon, and should see a noticeable
 \begin{verbatim}
 [1] CUDA-Based Incompressible Navier-Stokes Solver. Julien Thibault and Inanc Senocak.
 <http://coen.boisestate.edu/senocak/files/BSU_CUDA_Res_v5.pdf>
+
 [2] TeraFlop Computing on a Desktop PC with GPUs for 3D CDF. J. Tolke and  M. Krafczyk.  
 <http://www.irmb.bau.tu-bs.de/UPLOADS/toelke/Publication/toelkeD3Q13.pdf>
+
 [3] CUDA Acceleration of Molecular Dynamics. David Kirk and Wen-mei W. Hwu.  
 <http://www.ks.uiuc.edu/Research/gpu/files/lecture8casestudies.pdf>
+
 [4] NVIDIA CUDA Project Repository. <http://www.nvidia.com/object/cuda_home.html#>
+
 [5] Intel Corei7 Specifications <http://www.intel.com/products/processor/corei7/specifications.htm>
+
 [6] NVIDIA GTX295 Specifications <http://www.nvidia.com/object/product_geforce_gtx_295_us.html>
+
 [7] Fiedler, Glenn. Physics in 3D. <http://gafferongames.com/game-physics/physics-in-3d/>
+
 [8] Nyland, Lars. Harris, Mark. Prins, Jan. Fast N-Body Simulation with CUDA. 
 <http://wwwx.cs.unc.edu/~prins/Classes/633/Readings/nbody_gems3_ch31.pdf>
+
 [9] CS267 Lecture Notes: 11 April 1996. Fast Hierarchical Methods for the N-body Problem.
 <http://www.cs.berkeley.edu/~demmel/cs267/lecture26/lecture26.html>
 \end{verbatim}
 
+\section{Additional Sources}
+\begin{verbatim}
+Chen, Y. Chen, Nicholas. Barnes-Hut N Body Simulation. 
+<https://agora.cs.illinois.edu/display/transformation/Barnes-Hut+N-Body+Simulation>
+
+Barnes-Hut Applet. <http://www.cs.cmu.edu/~scandal/applets/bh.html>
+
+Parallel N Body Simulations. <http://www.cs.cmu.edu/~scandal/alg/nbody.html>
+
+J.E. Barnes and P. Hut. A hierarchical O(N Log N) force calculation algorithm. Nature,
+324(4):446-449, December 1986.
+\end{verbatim}
+
+\clearpage
 \appendix
 \section{Source Code}
 The source provided in this appendix should provide a valuable resource for understanding the bulk of the simulation. Source files can also be found online at http://github.com/mredmond/BarraCUDA
@@ -117,18 +151,24 @@ package graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.*;
 import main.BarraCUDA;
 import physics.PointCharge;
+import util.Vector;
 
-public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener
+public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener, MouseListener
 {
 	public twoDimensionalSim()
 	{
@@ -145,31 +185,39 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		JFrame frame = new JFrame();
 		frame.setSize(1280, 1024);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("Controls");
-		
+
 		JMenuItem pause = new JMenuItem("Pause ||");
 		pause.addActionListener(this);
 		pause.setActionCommand("pause");
 		fileMenu.add(pause);
-		
+
 		JMenuItem play = new JMenuItem("Play  |>");
 		play.addActionListener(this);
 		play.setActionCommand("play");
 		fileMenu.add(play);
+
+		JMenuItem increase = new JMenuItem("Increase Scale Factor");
+		increase.addActionListener(this);
+		increase.setActionCommand("increase");
+		fileMenu.add(increase);
 		
-		JMenuItem step = new JMenuItem("Step Forward  ->");
-		step.addActionListener(this);
-		step.setActionCommand("step");
-		fileMenu.add(step);
+		JMenuItem decrease = new JMenuItem("Decrease Scale Factor");
+		decrease.addActionListener(this);
+		decrease.setActionCommand("decrease");
+		fileMenu.add(decrease);
 		
+		
+
 		menuBar.add(fileMenu);
 		frame.setJMenuBar(menuBar);
 		frame.add(this);
 		frame.setVisible(true);
+		frame.addMouseListener(this);
 	}
-	
+
 	//This method accesses the global arrayList held in the BarraCUDA main class. 
 	//It will paint each charge, as well as its electric field vector (representing acceleration)
 	//or its momentum vector (chosen by default... if you want the other one, uncomment it) 
@@ -177,8 +225,12 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	{
 		super.paint(g);
 		ArrayList<PointCharge> charges = BarraCUDA.mainChargeManager;
+		
 		g.setColor(Color.white);
 		g.fillRect(0,0,this.getBounds().width,this.getBounds().height);
+		g.setColor(Color.black);
+		g.drawString("Current Field Strength Scale: " + BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR, 50, 50);
+		g.drawString("Current System Momentum: " + BarraCUDA.physicsEngine.updateMomentumChecksum().length(), 500, 50);
 		
 		Iterator<PointCharge> myIter = charges.iterator();
 		while(myIter.hasNext())
@@ -189,54 +241,63 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 			drawMomentum(g, pc);
 		}
 	}
-	
+
 	//This method draws a charge according to its position and parity.
 	public void drawCharge(Graphics g, PointCharge pc)
 	{
-		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
-		else if(pc.myState.charge < 0) g.setColor(Color.RED);
+		//double alpha = pc.myState.mass;
+		if(pc.myState.charge > 0)
+		{
+			//g.setColor(new Color(0f,0f,1,(float) alpha));
+			g.setColor(Color.blue);
+		}
+		else if(pc.myState.charge < 0)
+		{
+			//g.setColor(new Color(1,0f,0f,(float) alpha));
+			g.setColor(Color.red);
+		}
 		else g.setColor(Color.LIGHT_GRAY);
-		
+
 		//Actually draw the particle
-		g.fillOval((int) Math.round(pc.myState.position.x - pc.myState.radius), 
-		(int) Math.round(pc.myState.position.y - pc.myState.radius), (int) Math.round(2*pc.myState.radius), (int) Math.round(2*pc.myState.radius));
+		g.fillOval((int) Math.round(pc.myState.position.x - pc.myState.radius), (int) Math.round(pc.myState.position.y - pc.myState.radius), (int) Math.round(2*pc.myState.radius), (int) Math.round(2*pc.myState.radius));
 	}
-	
+
 	//Draw the electric field vector on any point charge.
 	public void drawEField(Graphics g, PointCharge pc)
 	{
 		if(pc.myState.charge > 0) g.setColor(Color.BLUE);
 		else if(pc.myState.charge < 0) g.setColor(Color.RED);
 		else g.setColor(Color.LIGHT_GRAY);
-		
-		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), 
-		(int) Math.round(pc.myState.position.x + pc.myState.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
+
+		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myState.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
 	}
-	
+
 	//Draw the momentum on any point charge.
 	public void drawMomentum(Graphics g, PointCharge pc)
 	{
 		g.setColor(Color.black);
-		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), 
-		(int) Math.round(pc.myState.position.x + pc.myState.momentum.x), (int) Math.round(pc.myState.position.y + pc.myState.momentum.y));
+		g.drawLine((int) Math.round(pc.myState.position.x), (int) Math.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myState.momentum.x), (int) Math.round(pc.myState.position.y + pc.myState.momentum.y));
 	}
 
 	@Override
-	//Non-functional menus. Might be implemented at some point, might not.
 	public void actionPerformed(ActionEvent arg0) 
 	{
 		String command = arg0.getActionCommand();
 		if(command.equals("play"))
 		{
-			//do play event handling
+			BarraCUDA.paused = false;
 		}
-		else if(command.equals("step"))
+		else if(command.equals("increase"))
 		{
-			//do step handling
+			BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR *= 1.10;
+		}
+		else if(command.equals("decrease"))
+		{
+			BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR *= 0.9;
 		}
 		else if(command.equals("pause"))
 		{
-			//do pause handling
+			BarraCUDA.paused = true;
 		}	
 	}
 	@Override
@@ -244,9 +305,44 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	{
 		// TODO Auto-generated method stub
 	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) 
+	{
+		System.out.println("Button num " + arg0.getButton() + " was pressed.");
+		BarraCUDA.paused = true;
+		double charge = (arg0.getButton() == 1) ? 1.0 : -1.0;
+		int posX = arg0.getX() - 3; //offsets
+		int posY = arg0.getY() - 52;
+		int id = BarraCUDA.physicsEngine.chargeManager.size();
+		BarraCUDA.physicsEngine.chargeManager.add(id, new PointCharge(id, charge, 1, 2));
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.position = new Vector((double) posX, (double) posY, 0);
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.momentum = new Vector(0, 0, 0);
+		BarraCUDA.physicsEngine.chargeManager.get(id).myState.efield = new Vector(0, 0, 0);
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 \end{verbatim}
+\clearpage
 \subsection{Main Package}
 \subsubsection{BarraCUDA.java}
 \begin{verbatim}
@@ -267,62 +363,59 @@ public class BarraCUDA
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 130;
+	public static final int NUM_PARTICLES = 150;
+	public static boolean paused = false;
 	public static void main(String[] args)
 	{
 		//Makes a new graphics object to render into
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
-		
-//		Manual charge creation
-//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 5);
-//		PointCharge charge1 = new PointCharge(1, 1.0, 1, 5);
-//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 5);
-//		
-//		mainChargeManager.add(charge0);
-//		mainChargeManager.add(charge1);
-//		mainChargeManager.add(charge2);
+
+		//		Manual charge creation
+		//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
+		//		PointCharge charge1 = new PointCharge(1, -1.0, 1, 2);
+		//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
+
+		//		mainChargeManager.add(charge0);
+		//		mainChargeManager.add(charge1);
+		//		mainChargeManager.add(charge2);
 
 		//Auto Initialization
 		addRandomCharges(NUM_PARTICLES);
-		
+
 		//physics engine object initialization
 		physicsEngine = new Physics(mainChargeManager);
 
-//		Manual state initialization
-//		physicsEngine.initializeChargePosition(0, new Vector(300, 200, 0));
-//		physicsEngine.initializeChargeMomentum(0, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(0, new Vector(0,0,0));
-//
-//		physicsEngine.initializeChargePosition(1, new Vector(400, 200, 0));
-//		physicsEngine.initializeChargeMomentum(1, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(1, new Vector(0,0,0));
-//
-//		physicsEngine.initializeChargePosition(2, new Vector(350, 150, 0));
-//		physicsEngine.initializeChargeMomentum(2, new Vector(0, 0, 0));
-//		physicsEngine.initializeEField(2, new Vector(0,0,0));
-		
+		//		Manual state initialization
+		//		physicsEngine.initializeChargePosition(0, new Vector(300, 200, 0));
+		//		physicsEngine.initializeChargeMomentum(0, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(0, new Vector(0,0,0));
+		//
+		//		physicsEngine.initializeChargePosition(1, new Vector(400, 200, 0));
+		//		physicsEngine.initializeChargeMomentum(1, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(1, new Vector(0,0,0));
+		//
+		//		physicsEngine.initializeChargePosition(2, new Vector(350, 150, 0));
+		//		physicsEngine.initializeChargeMomentum(2, new Vector(0, 0, 0));
+		//		physicsEngine.initializeEField(2, new Vector(0,0,0));
+
 		//Auto Initialization
 		initializeCharges(NUM_PARTICLES);
-				
-		
+
+
 		//Main update loop. Does one physics iteration, then renders scene.
-		double dt = 0.01;
-		for(double t = 0.0; t <= 30.000; t+=dt)
+		double dt = 0.001;
+		double t = 0;
+		while(true)
 		{
-			physicsEngine.updateAll(t, dt);
-			try 
+			while(!paused)
 			{
-				Thread.sleep(10);
-				//Thread.sleep(2000/NUM_PARTICLES); //scales wait time to deal with number of particles? not very useful
-			} 
-			catch (InterruptedException e) 
-			{
-				e.printStackTrace();
+				physicsEngine.updateAll(t, dt);
+				myGraphicsObj.repaint();
 			}
-			myGraphicsObj.repaint();
+			t += dt;
 		}
 	}
-	
+
 	//Does what it says on the tin: adds n random charges to the physics engine
 	public static void addRandomCharges(int n)
 	{
@@ -331,39 +424,26 @@ public class BarraCUDA
 			double charge = Math.random();
 			double chargeSignModifier = Math.random();
 			double mass = 1;
-			double radius = 5;
-			
+			double radius = 2;
+
 			if(chargeSignModifier <= 0.5)
 			{
 				charge = -charge;
 			}
-			
+
 			PointCharge pc = new PointCharge(i,charge,mass,radius);
 			mainChargeManager.add(pc);
 		}
 	}
-	
-	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector, and gives them a random momentum
+
+	//Again, name says it all. Sets the charges with random positions, zeroes their efield vector
 	public static void initializeCharges(int n)
 	{
 		for(int i = 0; i < n; i++)
 		{
-			double momx = Math.random();
-			double momxMod = Math.random();
-			double momy = Math.random();
-			double momyMod = Math.random();
-			if(momxMod <= 0.5)
-			{
-				momx = -momx;
-			}
-			if(momyMod <= 0.5)
-			{
-				momy = -momy;
-			}
-				
 			//The magic numbers in the first line here are scaled to deal with the resolution 1280 x 1024, but can be adjusted accordingly.
 			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
-			physicsEngine.initializeChargeMomentum(i, new Vector(momx, momy, 0));
+			physicsEngine.initializeChargeMomentum(i, new Vector(0, 0, 0));
 			physicsEngine.initializeEField(i, new Vector(0,0,0));
 		}
 	}
@@ -388,7 +468,8 @@ import util.Vector;
 
 public class Physics 
 {
-	public final double GRAPHICS_EFIELD_SCALE_FACTOR = 50000; 
+	public double eps = 0.00000000000001;
+	public double GRAPHICS_EFIELD_SCALE_FACTOR = 150000; 
 	//this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
@@ -428,12 +509,16 @@ public class Physics
 	{
 		//This method updates the efield vector for each point charge in the chargeManager.
 		//It is used in the NumericalIntegration class for determining forces.
-		for(PointCharge pc1 : chargeManager)
+		Iterator<PointCharge> outerIter = chargeManager.iterator();
+		while(outerIter.hasNext())
 		{
+			PointCharge pc1 = outerIter.next();
 			//create the efield acting on one charge
 			Vector sum = new Vector(0,0,0); 
-			for(PointCharge pc2: chargeManager)
+			Iterator<PointCharge> innerIterator = chargeManager.iterator();
+			while(innerIterator.hasNext())
 			{
+				PointCharge pc2 = (PointCharge) innerIterator.next();
 				if(pc2.idNum == pc1.idNum)
 				{
 					//skip this case ... don't want to add a particle to its own e-field
@@ -458,7 +543,7 @@ public class Physics
 					else
 					{
 						Vector numerator = rDiff.scale(qi);
-						double inverseDenominator = Math.pow((rDiff.length()), -3);
+						double inverseDenominator = Math.pow((rDiff.length() + eps), -3);
 						sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
 						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work. 
 					}
@@ -469,26 +554,35 @@ public class Physics
 				//2D Collision Response at the moment. 
 				//kind of touchy... would probably think hard about where I am doing this test (shouldn't it be inside the main loop and not the forces update?)
 				PointCharge pc2 = pc1.myState.touching;
+				
 				Vector collisionUnitNormal = pc2.myState.position.subtract(pc1.myState.position).normalize();
-				Vector collisionUnitTangent = new Vector(collisionUnitNormal.y, collisionUnitNormal.x, 0);	
+				Vector collisionUnitTangent = new Vector(collisionUnitNormal.y, collisionUnitNormal.x, 0);
+				
 				Double v1n = collisionUnitNormal.dot(pc1.myState.velocity);
 				Double v1t = collisionUnitTangent.dot(pc1.myState.velocity);
 				Double v2n = collisionUnitNormal.dot(pc2.myState.velocity);
 				Double v2t = collisionUnitTangent.dot(pc2.myState.velocity);
+				
 				Double v1tprime = v1t;
 				Double v2tprime = v2t;
 				Double v1nprime = (v1n*(pc1.myState.mass - pc2.myState.mass) + v2n*(2*pc2.myState.mass))/(pc1.myState.mass + pc2.myState.mass);
-				Double v2nprime = (v2n*(pc2.myState.mass - pc1.myState.mass) + v1n*(2*pc1.myState.mass))/(pc1.myState.mass + pc2.myState.mass);			
+				Double v2nprime = (v2n*(pc2.myState.mass - pc1.myState.mass) + v1n*(2*pc1.myState.mass))/(pc1.myState.mass + pc2.myState.mass);
+				
 				Vector vec1nprime = collisionUnitNormal.scale(v1nprime);
 				Vector vec1tprime = collisionUnitTangent.scale(v1tprime);
 				Vector vec2nprime = collisionUnitNormal.scale(v2nprime);
 				Vector vec2tprime = collisionUnitTangent.scale(v2tprime);
+				
 				Vector vec1final = vec1nprime.add(vec1tprime);
-				Vector vec2final = vec2nprime.add(vec2tprime);	
+				Vector vec2final = vec2nprime.add(vec2tprime);
+				
 				pc1.myState.velocity = vec1final;
 				pc2.myState.velocity = vec2final;
+				
+				
 				pc1.myState.efield.zero();
-				pc2.myState.efield.zero();	
+				pc2.myState.efield.zero();
+				
 				pc1.myState.touchingOther = false;
 				pc2.myState.touchingOther = false;
 				pc1.myState.touching = null;
@@ -496,15 +590,78 @@ public class Physics
 				//pc1.myState.momentum.zero();
 			}
 		}
+		
 	}
+
+	
+	//used as a metric to test the accuracy of the simulation...
+	//because efield is a conservative field, this shouldn't change much
+	//between diff. iterations.
+	
+	public Vector updateMomentumChecksum()
+	{
+		Vector totalMomentum = new Vector(0,0,0);
+		for(PointCharge pc1 : chargeManager)
+		{
+			totalMomentum = totalMomentum.add(pc1.myState.momentum);
+		}
+		return totalMomentum;
+	}
+	
+	public double updateEnergyTotalChecksum()
+	{
+		double totalEnergy = 0;
+		totalEnergy += updatePotentialEnergy();
+		totalEnergy += updateKineticEnergy();
+		return totalEnergy;
+		
+	}
+	
+	public double updatePotentialEnergy()
+	{
+		//computes potential energy U = 1/(4*pi*e_0) * (pairwise sum over particle's charge/distance)
+		double prescaledEnergy = 0;
+		for(PointCharge pc1: chargeManager)
+		{
+			for(PointCharge pc2: chargeManager)
+			{
+				if(!pc1.equals(pc2))
+				{
+					prescaledEnergy += (pc1.myState.charge * pc2.myState.charge)/((pc1.myState.position.subtract(pc2.myState.position)).length());
+				}
+			}
+		}
+		
+		prescaledEnergy /= 2; //divided by two because each pair is actually counted twice.
+		return GRAPHICS_EFIELD_SCALE_FACTOR*prescaledEnergy;
+		
+	}
+	
+	public double updateKineticEnergy()
+	{
+		double prescaledEnergy = 0;
+		for(PointCharge pc : chargeManager)
+		{
+			prescaledEnergy += 0.5 * pc.myState.mass * pc.myState.velocity.length() * pc.myState.velocity.length();
+		}
+		return prescaledEnergy;
+	}
+	
 	public void updateAll(double t, double dt) 
 	{
 		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
+		//System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
+		
+		System.out.println("Momentum: " + updateMomentumChecksum() + " Magnitude: " + updateMomentumChecksum().length());
+		
+		//System.out.println("Energy: " + updateEnergyTotalChecksum());
+		//System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
 	}
+
 }
 
 \end{verbatim}
@@ -1024,11 +1181,15 @@ public class Vector
 
 \end{verbatim}
 
+\clearpage
+\small
 \section{Runtime Data}
 Listed below are sample runtime data for N = 150 particles, over 50 timesteps (once past the initial collision phases). 
 The vectors listed give the total momentum of the system after each integration timestep.
 \subsection{$O(n^2)$ Implementation (w/o perturbation)}
-Average Change per Timestep (Using $|(1 - \frac{T(i+1)}{T(i)}|$ metric): 0.0033161442340016
+Average Change per Timestep (Using $|1 - \frac{T(i+1)}{T(i)}|$ metric): 0.0033161442340016
+\footnotesize
+\begin{verbatim}
 Momentum: <12.99645792306255, 4.18782718259834, 0.0> Magnitude: 13.65451628792631
 Momentum: <13.386432337988268, 4.272926051646834, 0.0> Magnitude: 14.05184926557285
 Momentum: <13.700153056360918, 4.210862978836403, 0.0> Magnitude: 14.332674586212105
@@ -1079,9 +1240,12 @@ Momentum: <14.857644217195045, 1.0632955073068615, 0.0> Magnitude: 14.8956432899
 Momentum: <14.857644217194945, 1.0632955073069326, 0.0> Magnitude: 14.895643289922242
 Momentum: <14.857644217194832, 1.0632955073069041, 0.0> Magnitude: 14.895643289922127
 Momentum: <14.857644217194505, 1.0632955073069468, 0.0> Magnitude: 14.895643289921804
-
+\end{verbatim}
+\small
 \subsection{$O(n^2)$ Implementation (w/ perturbation)}
-Average Change per Timestep (Using $|(1 - \frac{T(i+1)}{T(i)}|$ metric): 0.0005208755055888
+Average Change per Timestep (Using $|1 - \frac{T(i+1)}{T(i)}|$ metric): 0.0005208755055888
+\footnotesize
+\begin{verbatim}
 Momentum: <-7.988091888659362, -7.052996627381749, 0.0> Magnitude: 10.65618944311351
 Momentum: <-7.955427667489069, -7.045022096194632, 0.0> Magnitude: 10.626437112622517
 Momentum: <-7.923861132291378, -7.037221079477774, 0.0> Magnitude: 10.597643878017621
@@ -1132,10 +1296,7 @@ Momentum: <-8.210402444731834, -6.704837066136637, 0.0> Magnitude: 10.6002617131
 Momentum: <-8.210402444731976, -6.7048370661367755, 0.0> Magnitude: 10.600261713179652
 Momentum: <-8.21040244473182, -6.704837066136754, 0.0> Magnitude: 10.600261713179517
 Momentum: <-8.210402444731791, -6.704837066136541, 0.0> Magnitude: 10.60026171317936
-
-\subsection{$O(n \log n)$ Implementation (w/o perturbation)}
-To be implemented soon.
-\subsection{$O(n \log n)$ Implementation (w/ perturbation)}
-To be implemented soon.
+\end{verbatim}
+\small
 
 \end{document}

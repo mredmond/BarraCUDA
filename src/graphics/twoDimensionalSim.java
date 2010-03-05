@@ -86,6 +86,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		g.fillRect(0,0,this.getBounds().width,this.getBounds().height);
 		g.setColor(Color.black);
 		g.drawString("Current Field Strength Scale: " + BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR, 50, 50);
+		g.drawString("Current System Momentum: " + BarraCUDA.physicsEngine.updateMomentumChecksum().length(), 500, 50);
 		
 		Iterator<PointCharge> myIter = charges.iterator();
 		while(myIter.hasNext())

@@ -1,0 +1,30 @@
+\contentsline {section}{\numberline {1}Abstract}{3}
+\contentsline {section}{\numberline {2}Introduction}{3}
+\contentsline {section}{\numberline {3}Theory}{4}
+\contentsline {subsection}{\numberline {3.1}Supercomputing Theory}{4}
+\contentsline {subsection}{\numberline {3.2}Scientific Theory}{5}
+\contentsline {section}{\numberline {4}Algorithm Implementations And Evaluation}{6}
+\contentsline {section}{\numberline {5}Algorithm Speed}{7}
+\contentsline {section}{\numberline {6}Accomplishments}{8}
+\contentsline {section}{\numberline {7}The Next Steps}{8}
+\contentsline {subsection}{\numberline {7.1}For February}{8}
+\contentsline {subsection}{\numberline {7.2}For March}{8}
+\contentsline {section}{\numberline {8}Citations}{9}
+\contentsline {section}{\numberline {9}Additional Sources}{9}
+\contentsline {section}{\numberline {A}Source Code}{10}
+\contentsline {subsection}{\numberline {A.1}Graphics Package}{10}
+\contentsline {subsubsection}{\numberline {A.1.1}twoDimensionalSim.java}{10}
+\contentsline {subsection}{\numberline {A.2}Main Package}{13}
+\contentsline {subsubsection}{\numberline {A.2.1}BarraCUDA.java}{13}
+\contentsline {subsection}{\numberline {A.3}Physics Package}{14}
+\contentsline {subsubsection}{\numberline {A.3.1}Physics.java}{14}
+\contentsline {subsubsection}{\numberline {A.3.2}NumericalIntegration.java}{16}
+\contentsline {subsubsection}{\numberline {A.3.3}PointCharge.java}{17}
+\contentsline {subsection}{\numberline {A.4}Utilities Package}{17}
+\contentsline {subsubsection}{\numberline {A.4.1}Derivative.java}{17}
+\contentsline {subsubsection}{\numberline {A.4.2}Matrix.java}{17}
+\contentsline {subsubsection}{\numberline {A.4.3}State.java}{20}
+\contentsline {subsubsection}{\numberline {A.4.4}Vector.java}{21}
+\contentsline {section}{\numberline {B}Runtime Data}{22}
+\contentsline {subsection}{\numberline {B.1}$O(n^2)$ Implementation (w/o perturbation)}{22}
+\contentsline {subsection}{\numberline {B.2}$O(n^2)$ Implementation (w/ perturbation)}{23}
