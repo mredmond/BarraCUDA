@@ -55,7 +55,7 @@ public class BarraCUDA
 
 
 		//Main update loop. Does one physics iteration, then renders scene.
-		double dt = 0.001;
+		double dt = 0.0001;
 		double t = 0;
 		while(true)
 		{

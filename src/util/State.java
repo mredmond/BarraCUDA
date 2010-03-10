@@ -13,8 +13,6 @@ public class State {
 	public Vector position;
 	public Vector momentum;
 	public Vector efield; //the value of the electric field at this position
-	public PointCharge touching;
-	public Boolean touchingOther;
 
 	//secondary
 	public Vector velocity;
@@ -37,8 +35,6 @@ public class State {
 		this.radius = radius;
 		this.inverseMass = 1 / mass;
 		this.velocity = momentum.scale(inverseMass);
-		this.touchingOther = false;
-		this.touching = null;
 	}
 
 	// interpolation used for animating inbetween states
