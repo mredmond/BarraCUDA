@@ -12,8 +12,8 @@ import util.Vector;
 
 public class Physics 
 {
-	public double eps = 0.000000000001;
-	public double GRAPHICS_EFIELD_SCALE_FACTOR = 50000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
+	public double eps = 1;
+	public double GRAPHICS_EFIELD_SCALE_FACTOR = 10000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
 	public NumericalIntegration Integrator;
 
@@ -62,12 +62,9 @@ public class Physics
 			while(innerIterator.hasNext())
 			{
 				PointCharge pc2 = (PointCharge) innerIterator.next();
-				if(pc2.idNum == pc1.idNum)
+				if(pc2.idNum != pc1.idNum) //don't want to add a particle to its own e-field
 				{
-					//skip this case ... don't want to add a particle to its own e-field
-				}
-				else
-				{
+			
 					//necessary variables for eField calc
 					Vector r = pc1.myState.position;
 					Vector rHat = pc2.myState.position;
@@ -97,8 +94,7 @@ public class Physics
 			totalMomentum = totalMomentum.add(pc1.myState.momentum);
 		}
 		return totalMomentum;
-	}
-	
+	}	
 	public double updateEnergyTotalChecksum()
 	{
 		double totalEnergy = 0;
@@ -106,8 +102,7 @@ public class Physics
 		totalEnergy += updateKineticEnergy();
 		return totalEnergy;
 		
-	}
-	
+	}	
 	public double updatePotentialEnergy()
 	{
 		//computes potential energy U = 1/(4*pi*e_0) * (pairwise sum over particle's charge/distance)
@@ -127,7 +122,6 @@ public class Physics
 		return GRAPHICS_EFIELD_SCALE_FACTOR*prescaledEnergy;
 		
 	}
-	
 	public double updateKineticEnergy()
 	{
 		double prescaledEnergy = 0;
@@ -137,20 +131,15 @@ public class Physics
 		}
 		return prescaledEnergy;
 	}
-	
 	public void updateAll(double t, double dt) 
 	{
 		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
-		//System.out.println("Potential energy before integration: " + updatePotentialEnergy() + " Kinetic energy before integration: " + updateKineticEnergy());
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
 		
 		System.out.println("Momentum: " + updateMomentumChecksum() + " Magnitude: " + updateMomentumChecksum().length());
-		
-		//System.out.println("Energy: " + updateEnergyTotalChecksum());
-		//System.out.println("Potential energy after integration: " + updatePotentialEnergy() + " Kinetic energy after integration: " + updateKineticEnergy());
 	}
 
 }

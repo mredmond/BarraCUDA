@@ -10,61 +10,33 @@ import graphics.twoDimensionalSim;
 import java.util.ArrayList;
 import physics.*;
 import util.*;
+import java.util.Random;
 
 public class BarraCUDA 
 {
 	public static ArrayList<PointCharge> mainChargeManager = new ArrayList<PointCharge>();
 	public static Physics physicsEngine;
-	public static final int NUM_PARTICLES = 150;
+	public static final int NUM_PARTICLES = 200;
+	public static double dt = 0.01; //the choice of DT does nothing but control the SPEED of the simulation; it does not affect the accuracy.
+	public static double t = 0;
 	public static boolean paused = false;
+	private static Random gen = new Random();
 	public static void main(String[] args)
 	{
-		//Makes a new graphics object to render into
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim();
-
-		//		Manual charge creation
-		//		PointCharge charge0 = new PointCharge(0, 1.0, 1, 2);
-		//		PointCharge charge1 = new PointCharge(1, -1.0, 1, 2);
-		//		PointCharge charge2 = new PointCharge(2, -1.0, 1, 2);
-
-		//		mainChargeManager.add(charge0);
-		//		mainChargeManager.add(charge1);
-		//		mainChargeManager.add(charge2);
-
-		//Auto Initialization
 		addRandomCharges(NUM_PARTICLES);
-
-		//physics engine object initialization
 		physicsEngine = new Physics(mainChargeManager);
-
-		//		Manual state initialization
-		//		physicsEngine.initializeChargePosition(0, new Vector(300, 200, 0));
-		//		physicsEngine.initializeChargeMomentum(0, new Vector(0, 0, 0));
-		//		physicsEngine.initializeEField(0, new Vector(0,0,0));
-		//
-		//		physicsEngine.initializeChargePosition(1, new Vector(400, 200, 0));
-		//		physicsEngine.initializeChargeMomentum(1, new Vector(0, 0, 0));
-		//		physicsEngine.initializeEField(1, new Vector(0,0,0));
-		//
-		//		physicsEngine.initializeChargePosition(2, new Vector(350, 150, 0));
-		//		physicsEngine.initializeChargeMomentum(2, new Vector(0, 0, 0));
-		//		physicsEngine.initializeEField(2, new Vector(0,0,0));
-
-		//Auto Initialization
 		initializeCharges(NUM_PARTICLES);
 
-
 		//Main update loop. Does one physics iteration, then renders scene.
-		double dt = 0.0001;
-		double t = 0;
 		while(true)
 		{
 			while(!paused)
 			{
 				physicsEngine.updateAll(t, dt);
 				myGraphicsObj.repaint();
+				t += dt;
 			}
-			t += dt;
 		}
 	}
 
@@ -94,7 +66,7 @@ public class BarraCUDA
 		for(int i = 0; i < n; i++)
 		{
 			//The magic numbers in the first line here are scaled to deal with the resolution 1280 x 1024, but can be adjusted accordingly.
-			physicsEngine.initializeChargePosition(i, new Vector(Math.rint(1000*Math.random() + 50), Math.rint(800*Math.random() + 50), 0));
+			physicsEngine.initializeChargePosition(i, new Vector(gen.nextGaussian()*200 + 500, gen.nextGaussian()*200 + 500, 0));
 			physicsEngine.initializeChargeMomentum(i, new Vector(0, 0, 0));
 			physicsEngine.initializeEField(i, new Vector(0,0,0));
 		}
