@@ -40,6 +40,44 @@ public class BarraCUDA
 		}
 	}
 
+	public OcttreeNode constructOcttree()
+	{
+		/*
+	 	 Octree subdivides in this order:
+	 	 
+	 	      1---5
+	         /|  /|
+	        0---4 |
+	        | 3-|-7
+	        |/  |/
+	        2---6
+	 
+	        */
+		
+		OcttreeNode root = new OcttreeNode(null,null);
+		for(PointCharge pc : mainChargeManager)
+		{
+			octtreeInsert(pc, root);
+		}
+		
+		return root;
+	}
+	
+	public void octtreeInsert(Object ob, OcttreeNode n)
+	{
+/*		if subtree rooted at n is not a leaf
+			determine which child c of node n particle pc lies in
+			octtreeInsert(pc, c)
+		else if the subtree rooted at n is a leaf and is full
+			add n’s four children to the Quadtree
+			move the particle already in n into the child in which it lies
+			let c be child in which particle i lies
+			QuadInsert(i,c)
+		else if the subtree rooted at n is a half-empty leaf
+			store particle i in node n
+*/
+	}
+	
 	//Does what it says on the tin: adds n random charges to the physics engine
 	public static void addRandomCharges(int n)
 	{
