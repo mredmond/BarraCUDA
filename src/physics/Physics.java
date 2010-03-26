@@ -8,19 +8,37 @@
 package physics;
 
 import java.util.*;
+
+import main.BarraCUDA;
+
+import util.OctTreeInternalNode;
+import util.OctTreeNode;
+import util.OctTreeLeafNode;
 import util.Vector;
 
 public class Physics 
 {
-	public double eps = 1;
+	public static double eps = 1;
+	public static double eps2 = eps*eps;
+	public static double tol = 0.35; //should be less than 0.57 apparently? //tolerance for stopping recursion
+	public static double itol2 = 1.0/ (tol*tol);
+	public double rootDiameter = 2.0E5;
+	public Vector rootCenter = new Vector(0,0,0);
 	public double GRAPHICS_EFIELD_SCALE_FACTOR = 10000; //this is roughly analogous to the constant value K, except instead of 9 x 10^9, I use a smaller value
 	public ArrayList<PointCharge> chargeManager;
+	public OctTreeLeafNode[] bodyManager;
 	public NumericalIntegration Integrator;
 
-	public Physics(ArrayList<PointCharge> chargeManagerIn)
+	public Physics(ArrayList<PointCharge> chargeManagerIn, OctTreeLeafNode[] bodyManagerIn)
 	{
 		this.chargeManager = chargeManagerIn;
+		this.bodyManager = bodyManagerIn;
 		this.Integrator = new NumericalIntegration();
+	}
+	
+	public void updateBodyManager(OctTreeLeafNode[] bodyManagerIn)
+	{
+		this.bodyManager = bodyManagerIn;
 	}
 
 	public void addCharge(int id, double charge, double mass, double radius)
@@ -48,44 +66,11 @@ public class Physics
 		chargeManager.get(id).myState.efield = efieldIn;
 	}
 
-	public void updateElectrofieldApproximation()
-	{
-		//This method updates the efield vector for each point charge in the chargeManager.
-		//It is used in the NumericalIntegration class for determining forces.
-		Iterator<PointCharge> outerIter = chargeManager.iterator();
-		while(outerIter.hasNext())
-		{
-			PointCharge pc1 = outerIter.next();
-			//create the efield acting on one charge
-			Vector sum = new Vector(0,0,0); 
-			Iterator<PointCharge> innerIterator = chargeManager.iterator();
-			while(innerIterator.hasNext())
-			{
-				PointCharge pc2 = (PointCharge) innerIterator.next();
-				if(pc2.idNum != pc1.idNum) //don't want to add a particle to its own e-field
-				{
-			
-					//necessary variables for eField calc
-					Vector r = pc1.myState.position;
-					Vector rHat = pc2.myState.position;
-					Vector rDiff = r.subtract(rHat); //a vector going from r to rHat
-					double qi = pc2.myState.charge;
 
-						Vector numerator = rDiff.scale(qi);
-						double inverseDenominator = Math.pow((rDiff.length() + eps), -3);
-						sum = sum.add(numerator.scale(inverseDenominator)); //add up the other particles' effects
-						pc1.myState.efield = sum.scale(GRAPHICS_EFIELD_SCALE_FACTOR); //arbitrary scale factor to make graphics work. 
-				}
-			}
-		}
-		
-	}
-
-	
 	//used as a metric to test the accuracy of the simulation...
 	//because efield is a conservative field, this shouldn't change much
 	//between diff. iterations.
-	
+
 	public Vector updateMomentumChecksum()
 	{
 		Vector totalMomentum = new Vector(0,0,0);
@@ -101,7 +86,7 @@ public class Physics
 		totalEnergy += updatePotentialEnergy();
 		totalEnergy += updateKineticEnergy();
 		return totalEnergy;
-		
+
 	}	
 	public double updatePotentialEnergy()
 	{
@@ -117,10 +102,10 @@ public class Physics
 				}
 			}
 		}
-		
+
 		prescaledEnergy /= 2; //divided by two because each pair is actually counted twice.
 		return GRAPHICS_EFIELD_SCALE_FACTOR*prescaledEnergy;
-		
+
 	}
 	public double updateKineticEnergy()
 	{
@@ -131,14 +116,35 @@ public class Physics
 		}
 		return prescaledEnergy;
 	}
-	public void updateAll(double t, double dt) 
+	public void updateSimulation(double t, double dt) 
 	{
-		updateElectrofieldApproximation(); //just do this ONCE per update, otherwise you've got some problems
+		OctTreeInternalNode root = OctTreeInternalNode.newNode(rootCenter);
+		updateBodyManager(BarraCUDA.mainBodyManager);
+		//is this correct? I think I'm having issues translating between two data structures.
+		
+		
+		//build the tree
+		double radius = rootDiameter * 0.5;
+		for (int i = 0; i < BarraCUDA.NUM_PARTICLES; i++) 
+		{
+			root.insert(bodyManager[i], radius);
+		}
+
+		root.computeCenterOfCharge();
+
+		//update the forces
+		for(int i = 0; i < BarraCUDA.NUM_PARTICLES; i++)
+		{
+			bodyManager[i].computeForce(root, rootDiameter);
+		}
+
+		//integrate the particles
 		for(PointCharge pc : chargeManager)
 		{
 			Integrator.integrate(pc.myState, t, dt);
 		}
-		
+
+
 		System.out.println("Momentum: " + updateMomentumChecksum() + " Magnitude: " + updateMomentumChecksum().length());
 	}
 
