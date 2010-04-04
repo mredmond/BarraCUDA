@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  4 APR 2010 15:06
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.1.31)  4 APR 2010 15:43
 entering extended mode
 **C:/Users/mredmond/workspace/BarraCUDA/Monthly*Papers/March*Paper/marPaper.tex
 
@@ -162,25 +162,19 @@ Overfull \hbox (2.74089pt too wide) in paragraph at lines 136--136
 ethods for the N-body Problem.[] 
  []
 
-[11]
-Overfull \hbox (154.98956pt too wide) in paragraph at lines 152--152
-[]\OT1/cmtt/m/n/10 Chun Y Chen, Nicholas. Fast Parallel Barnes-Hut. <https://ag
-ora.cs.illinois.edu/display/transformation/Barnes-Hut+Java>[] 
- []
-
-[12
+[11] [12
 
 ] [13
 
 ]
-Overfull \hbox (90.7202pt too wide) in paragraph at lines 360--360
+Overfull \hbox (90.7202pt too wide) in paragraph at lines 361--361
 []\OT1/cmtt/m/n/5 g.fillOval((int) Math.round(pc.myState.position.x - pc.myStat
 e.radius), (int) Math.round(pc.myState.position.y - pc.myState.radius), (int) M
 ath.round(2*pc.myState.radius), (int) Math.round(2*pc.myState.radius));[] 
  []
 
 
-Overfull \hbox (111.97044pt too wide) in paragraph at lines 360--360
+Overfull \hbox (111.97044pt too wide) in paragraph at lines 361--361
 []\OT1/cmtt/m/n/5 g.drawLine((int) Math.round(pc.myState.position.x), (int) Mat
 h.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myS
 tate.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
@@ -188,7 +182,7 @@ tate.efield.x), (int) Math.round(pc.myState.position.y + pc.myState.efield.y));
  []
 
 
-Overfull \hbox (122.59557pt too wide) in paragraph at lines 360--360
+Overfull \hbox (122.59557pt too wide) in paragraph at lines 361--361
 []\OT1/cmtt/m/n/5 g.drawLine((int) Math.round(pc.myState.position.x), (int) Mat
 h.round(pc.myState.position.y), (int) Math.round(pc.myState.position.x + pc.myS
 tate.momentum.x), (int) Math.round(pc.myState.position.y + pc.myState.momentum.
@@ -197,18 +191,25 @@ y));[]
 
 [14] [15] [16
 
-] [17] [18] [19] [20] [21] [22] [23] [24] [25]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 1281.
- [26
+] [17
 
-] [27] [28]
+] [18] [19
+
+] [20] [21] [22] [23] [24] [25] [26]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 1283.
+ [27
+
+] [28]
+[29
+
+]
 ("C:\Users\mredmond\workspace\BarraCUDA\Monthly Papers\March Paper\marPaper.aux
 ") ) 
 Here is how much of TeX's memory you used:
  945 strings out of 495285
  12728 string characters out of 3179869
- 66149 words of memory out of 3000000
+ 67149 words of memory out of 3000000
  4178 multiletter control sequences out of 15000+200000
  9311 words of font info for 34 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -233,9 +234,9 @@ pe1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1
 /public/amsfonts/cm/cmsy9.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/pu
 blic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/publ
 ic/amsfonts/cm/cmtt8.pfb>
-Output written on marPaper.pdf (28 pages, 387906 bytes).
+Output written on marPaper.pdf (29 pages, 388320 bytes).
 PDF statistics:
- 174 PDF objects out of 1000 (max. 8388607)
+ 177 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
