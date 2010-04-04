@@ -7,28 +7,25 @@ package graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.*;
 import main.BarraCUDA;
 import physics.PointCharge;
-import util.Vector;
+import util.OctTreeLeafNode;
 
 public class twoDimensionalSim extends JPanel implements ActionListener, ItemListener, MouseListener
 {
-	public twoDimensionalSim()
+	
+	public twoDimensionalSim(int _width, int _height)
 	{
-		createAndShowGUI();	
+		createAndShowGUI(_width, _height);	
 	}
 	public void setSize(Dimension d)
 	{
@@ -36,10 +33,10 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		repaint();
 	}
 	//This method initializes all of the menus. At the moment, these menus are non-functional.
-	public void createAndShowGUI()
+	public void createAndShowGUI(int width, int height)
 	{
 		JFrame frame = new JFrame();
-		frame.setSize(1280, 1024);
+		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -80,7 +77,7 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-		ArrayList<PointCharge> charges = BarraCUDA.mainChargeManager;
+		OctTreeLeafNode[] charges = BarraCUDA.bodyManager;
 		
 		g.setColor(Color.white);
 		g.fillRect(0,0,this.getBounds().width,this.getBounds().height);
@@ -88,10 +85,11 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 		g.drawString("Current Field Strength Scale: " + BarraCUDA.physicsEngine.GRAPHICS_EFIELD_SCALE_FACTOR, 50, 50);
 		g.drawString("Current System Momentum: " + BarraCUDA.physicsEngine.updateMomentumChecksum().length(), 500, 50);
 		g.drawString("Current Simulation Time: " + BarraCUDA.t, 900, 50);
-		Iterator<PointCharge> myIter = charges.iterator();
-		while(myIter.hasNext())
+		
+		
+		for(int i = 0; i < BarraCUDA.NUM_PARTICLES; i++)
 		{
-			PointCharge pc = myIter.next();
+			PointCharge pc = charges[i].pointCharge;
 			drawCharge(g, pc);
 			//drawEField(g, pc);
 			drawMomentum(g, pc);
@@ -164,16 +162,16 @@ public class twoDimensionalSim extends JPanel implements ActionListener, ItemLis
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
-		System.out.println("Button num " + arg0.getButton() + " was pressed.");
-		BarraCUDA.paused = true;
-		double charge = (arg0.getButton() == 1) ? 1.0 : -1.0;
-		int posX = arg0.getX() - 3; //offsets
-		int posY = arg0.getY() - 52;
-		int id = BarraCUDA.physicsEngine.chargeManager.size();
-		BarraCUDA.physicsEngine.chargeManager.add(id, new PointCharge(id, charge, 1, 2));
-		BarraCUDA.physicsEngine.chargeManager.get(id).myState.position = new Vector((double) posX, (double) posY, 0);
-		BarraCUDA.physicsEngine.chargeManager.get(id).myState.momentum = new Vector(0, 0, 0);
-		BarraCUDA.physicsEngine.chargeManager.get(id).myState.efield = new Vector(0, 0, 0);
+//		System.out.println("Button num " + arg0.getButton() + " was pressed.");
+//		BarraCUDA.paused = true;
+//		double charge = (arg0.getButton() == 1) ? 1.0 : -1.0;
+//		int posX = arg0.getX() - 3; //offsets
+//		int posY = arg0.getY() - 52;
+//		int id = BarraCUDA.physicsEngine.chargeManager.size();
+//		BarraCUDA.physicsEngine.chargeManager.add(id, new PointCharge(id, charge, 1, 2));
+//		BarraCUDA.physicsEngine.chargeManager.get(id).myState.position = new Vector((double) posX, (double) posY, 0);
+//		BarraCUDA.physicsEngine.chargeManager.get(id).myState.momentum = new Vector(0, 0, 0);
+//		BarraCUDA.physicsEngine.chargeManager.get(id).myState.efield = new Vector(0, 0, 0);
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {

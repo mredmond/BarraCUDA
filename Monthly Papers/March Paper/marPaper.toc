@@ -1,0 +1,38 @@
+\contentsline {section}{\numberline {1}Abstract}{2}
+\contentsline {section}{\numberline {2}Introduction}{5}
+\contentsline {section}{\numberline {3}History}{5}
+\contentsline {section}{\numberline {4}Theory}{6}
+\contentsline {subsection}{\numberline {4.1}Supercomputing Theory}{6}
+\contentsline {subsection}{\numberline {4.2}Scientific Theory}{7}
+\contentsline {section}{\numberline {5}Algorithm Implementations}{8}
+\contentsline {section}{\numberline {6}Algorithm Speed}{9}
+\contentsline {section}{\numberline {7}Accomplishments}{10}
+\contentsline {section}{\numberline {8}The Next Steps}{10}
+\contentsline {subsection}{\numberline {8.1}For February}{10}
+\contentsline {subsection}{\numberline {8.2}For March}{10}
+\contentsline {subsection}{\numberline {8.3}For April}{11}
+\contentsline {section}{\numberline {9}Citations}{11}
+\contentsline {section}{\numberline {10}Additional Sources}{12}
+\contentsline {section}{\numberline {A}Source Code}{13}
+\contentsline {subsection}{\numberline {A.1}Graphics Package}{13}
+\contentsline {subsubsection}{\numberline {A.1.1}twoDimensionalSim.java}{13}
+\contentsline {subsection}{\numberline {A.2}Main Package}{16}
+\contentsline {subsubsection}{\numberline {A.2.1}BarraCUDA.java}{16}
+\contentsline {subsection}{\numberline {A.3}Physics Package}{16}
+\contentsline {subsubsection}{\numberline {A.3.1}Physics.java}{16}
+\contentsline {subsubsection}{\numberline {A.3.2}NumericalIntegration.java}{17}
+\contentsline {subsubsection}{\numberline {A.3.3}PointCharge.java}{18}
+\contentsline {subsection}{\numberline {A.4}Utilities Package}{18}
+\contentsline {subsubsection}{\numberline {A.4.1}OctTreeNode.java}{18}
+\contentsline {subsubsection}{\numberline {A.4.2}OctTreeInternalNode.java}{18}
+\contentsline {subsubsection}{\numberline {A.4.3}OctTreeLeafNode.java}{19}
+\contentsline {subsubsection}{\numberline {A.4.4}Derivative.java}{21}
+\contentsline {subsubsection}{\numberline {A.4.5}Matrix.java}{21}
+\contentsline {subsubsection}{\numberline {A.4.6}State.java}{24}
+\contentsline {subsubsection}{\numberline {A.4.7}Vector.java}{24}
+\contentsline {section}{\numberline {B}Runtime Data}{26}
+\contentsline {subsection}{\numberline {B.1}$O(n^2)$ Implementation (w/o perturbation)}{26}
+\contentsline {subsection}{\numberline {B.2}$O(n^2)$ Implementation (w/ perturbation)}{27}
+\contentsline {subsection}{\numberline {B.3}$O(n \mathop {\mathgroup \symoperators log}\nolimits n)$ Implementation (w/o perturbation)}{27}
+\contentsline {subsection}{\numberline {B.4}$O(n \mathop {\mathgroup \symoperators log}\nolimits n)$ Implementation (w/ perturbation)}{28}
+\contentsline {section}{\numberline {C}Acknowledgements}{28}
