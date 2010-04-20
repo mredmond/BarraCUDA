@@ -78,7 +78,7 @@ public class OctTreeLeafNode extends OctTreeNode
 					force = ln.pointCharge.myState.charge * this.pointCharge.myState.charge * invRootDistance * invRootDistance * invRootDistance * Physics.GRAPHICS_EFIELD_SCALE_FACTOR;
 					
 					pointCharge.myState.efield = pointCharge.myState.efield.add(dHat.scale(force));
-					System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
+//					System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
 				}
 			}
 		} 
@@ -92,14 +92,14 @@ public class OctTreeLeafNode extends OctTreeNode
 				OctTreeInternalNode in = (OctTreeInternalNode) n;
 				force = in.cumulativeCharge * this.pointCharge.myState.charge * invRootDistance * invRootDistance * invRootDistance * Physics.GRAPHICS_EFIELD_SCALE_FACTOR;
 				pointCharge.myState.efield = pointCharge.myState.efield.add(dHat.scale(force));
-				System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
+				//System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
 			}
 			else //n is a far away leaf
 			{
 				OctTreeLeafNode ln = (OctTreeLeafNode) n;
 				force = ln.pointCharge.myState.charge * this.pointCharge.myState.charge * invRootDistance * invRootDistance * invRootDistance * Physics.GRAPHICS_EFIELD_SCALE_FACTOR;
 				pointCharge.myState.efield = pointCharge.myState.efield.add(dHat.scale(force));
-				System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
+				//System.out.println("Added efield vector " + dHat.scale(force) + " to pointCharge " + this.pointCharge.idNum);
 			}
 		}
 	}

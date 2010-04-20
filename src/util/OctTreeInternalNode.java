@@ -87,7 +87,7 @@ public class OctTreeInternalNode extends OctTreeNode
 					double c = chl.pointCharge.myState.charge;		
 					cumulativeCharge += c;
 					//System.out.println("current sumCharge: " + sumCharge);
-					centerOfCharge = centerOfCharge.add(ch.position.scale(c));
+					centerOfCharge = centerOfCharge.add(chl.position.scale(c));
 				}
 				else
 				{

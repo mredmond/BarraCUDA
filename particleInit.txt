@@ -1,0 +1,4 @@
+id, charge, mass, radius, positionx, positiony, positionz, momentumx, momentumy, momentumz, efieldx, efieldy, efieldz
+0 0.89543 1 2 400 400 0 0 0 0 0 0 0
+1 0.89543 1 2 400 800 0 0 0 0 0 0 0
+2 -0.89543 1 2 600 600 0 0 0 0 0 0 0

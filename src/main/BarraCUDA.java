@@ -15,11 +15,15 @@ import graphics.twoDimensionalSim;
 import physics.*;
 import util.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class BarraCUDA 
 {
-	public static final int NUM_PARTICLES = 2;
+	public static final int NUM_PARTICLES = 3
+	;
 	public static double dt = 0.001;
 	public static double t = 0;
 	public static OctTreeLeafNode[] bodyManager = new OctTreeLeafNode[NUM_PARTICLES];
@@ -31,6 +35,7 @@ public class BarraCUDA
 		twoDimensionalSim myGraphicsObj = new twoDimensionalSim(1280,1024);
 		physicsEngine = new Physics();
 		addAndInitializeRandomCharges();
+		//loadChargesFromFile("particleInit.txt");
 		
 
 
@@ -42,10 +47,42 @@ public class BarraCUDA
 				physicsEngine.updateSimulation(t, dt);
 				myGraphicsObj.repaint();
 				t += dt;
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
+	
+	public static void loadChargesFromFile(String filename)
+	{
+		try {
+			Scanner sc = new Scanner(new File(filename));
+			sc.nextLine(); //skips the header line
+			while(sc.hasNextLine())
+			{
+				int id = sc.nextInt();
+				double charge = sc.nextDouble();
+				double mass = sc.nextDouble();
+				double radius = sc.nextDouble();
+				PointCharge pc = new PointCharge(id,charge,mass,radius);
+				pc.myState.position = new Vector(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
+				pc.myState.momentum = new Vector(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
+				pc.myState.efield = new Vector(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
+				bodyManager[id] = new OctTreeLeafNode(pc);
+				System.out.println("Read in " + pc);
+			}
+			sc.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	//Does what it says on the tin: adds n random charges to the physics engine
 	public static void addAndInitializeRandomCharges()
