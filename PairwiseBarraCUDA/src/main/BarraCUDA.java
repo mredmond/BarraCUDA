@@ -28,6 +28,7 @@ public class BarraCUDA
 	public static boolean paused = false;
 	public static boolean showEfieldVector = false;
 	public static boolean showMomentumVector = true;
+	public static double fps = 0;
 	private static Random gen = new Random();
 	public static void main(String[] args)
 	{
@@ -40,21 +41,23 @@ public class BarraCUDA
 		//Main update loop. Does one physics iteration, then renders scene.
 		while(true)
 		{
+			int i = 0;
+			double accumulator = 0;
 			while(!paused)
-			{
+			{	
+				if(i == 100)
+				{
+					fps = 100000/accumulator;
+					i = 0;
+					accumulator = 0;
+				}
+				double startTime = System.currentTimeMillis();
 				physicsEngine.updateAll(t, dt);
 				myGraphicsObj.repaint();
+				double stopTime = System.currentTimeMillis();
+				accumulator += (stopTime - startTime);
 				t += dt;
-				
-//				try 
-//				{
-//					Thread.sleep((long) (1000*dt));
-//				} 
-//				catch (InterruptedException e) 
-//				{
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				i++;
 			}
 		}
 	}
@@ -94,7 +97,7 @@ public class BarraCUDA
 			double charge = Math.random();
 			double chargeSignModifier = Math.random();
 			double mass = 1; //this really isn't used at all
-			double radius = 2;
+			double radius = 1.5*charge + 2; //used for graphics
 
 			if(chargeSignModifier <= 0.5) charge = -charge;
 

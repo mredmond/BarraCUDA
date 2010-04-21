@@ -17,7 +17,7 @@ public class Physics
 	public static double eps2 = eps*eps; 
 	public static double tol = 0.50; //should be less than 0.57. tolerance for stopping recursion
 	public static double itol2 = 1.0/ (tol*tol);
-	public double rootDiameter = 2000.0; //the maximum width of the "universe"
+	public double rootDiameter = 2000000.0; //the maximum width of the "universe"
 	public Vector rootCenter = new Vector(0,0,0); //the literal center of the "universe"
 	public static double GRAPHICS_EFIELD_SCALE_FACTOR = 10000;
 	public NumericalIntegration Integrator;
@@ -67,6 +67,7 @@ public class Physics
 		{	
 			PointCharge pc = BarraCUDA.bodyManager[i].pointCharge;
 			Integrator.integrate(pc.myState, t, dt);
+			System.out.println(pc);
 		}
 	}
 

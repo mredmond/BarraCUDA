@@ -23,48 +23,48 @@ public class OctTreeLeafNode extends OctTreeNode
 	
 	//This method computes the force on a leaf node recursively with the FMM model. 
 	//Details on exactly how this is done are included in the paper.
-	public void recurseForce(OctTreeNode n, double dsq)
+	public void recurseForce(OctTreeNode n, double maxRecurseDist)
 	{
 		double force;
 		Vector dHat = n.position.subtract(this.position); //distance from this node to the next
 		double drsq = dHat.length2(); 
-		if (drsq < dsq) 
+		if (drsq < maxRecurseDist) 
 		{
 			if (n instanceof OctTreeInternalNode) //it's not a leaf
 			{ 
 				OctTreeInternalNode in = (OctTreeInternalNode) n;
-				dsq *= 0.25;
+				maxRecurseDist *= 0.25;
 				if (in.child[0] != null) 
 				{
-					recurseForce(in.child[0], dsq);
+					recurseForce(in.child[0], maxRecurseDist);
 				}
 				if (in.child[1] != null) 
 				{
-					recurseForce(in.child[1], dsq);
+					recurseForce(in.child[1], maxRecurseDist);
 				}
 				if (in.child[2] != null) 
 				{
-					recurseForce(in.child[2], dsq);
+					recurseForce(in.child[2], maxRecurseDist);
 				}
 				if (in.child[3] != null) 
 				{
-					recurseForce(in.child[3], dsq);
+					recurseForce(in.child[3], maxRecurseDist);
 				}
 				if (in.child[4] != null) 
 				{
-					recurseForce(in.child[4], dsq);
+					recurseForce(in.child[4], maxRecurseDist);
 				}
 				if (in.child[5] != null) 
 				{
-					recurseForce(in.child[5], dsq);
+					recurseForce(in.child[5], maxRecurseDist);
 				}
 				if (in.child[6] != null) 
 				{
-					recurseForce(in.child[6], dsq);
+					recurseForce(in.child[6], maxRecurseDist);
 				}	
 				if (in.child[7] != null) 
 				{
-					recurseForce(in.child[7], dsq);
+					recurseForce(in.child[7], maxRecurseDist);
 				}
 			} 
 			else 

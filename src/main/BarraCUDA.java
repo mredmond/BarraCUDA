@@ -22,8 +22,7 @@ import java.util.Scanner;
 
 public class BarraCUDA 
 {
-	public static final int NUM_PARTICLES = 3
-	;
+	public static final int NUM_PARTICLES = 2000;
 	public static double dt = 0.001;
 	public static double t = 0;
 	public static OctTreeLeafNode[] bodyManager = new OctTreeLeafNode[NUM_PARTICLES];
@@ -44,15 +43,18 @@ public class BarraCUDA
 		{
 			while(!paused)
 			{
+				double startTime = System.currentTimeMillis();
 				physicsEngine.updateSimulation(t, dt);
+				double stopTime = System.currentTimeMillis();
+				System.out.println(stopTime - startTime);
 				myGraphicsObj.repaint();
 				t += dt;
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					Thread.sleep(50);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
 	}
